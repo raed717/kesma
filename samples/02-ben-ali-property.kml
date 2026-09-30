@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Propriété Ben Ali</name>
+    <Placemark>
+      <name>Terre agricole — Henchir</name>
+      <Polygon><outerBoundaryIs><LinearRing><coordinates>
+        10.286504,36.6560983,0 10.2899716,36.655979,0 10.2902648,36.6587003,0 10.2881968,36.6590675,0 10.2863159,36.6588031,0 10.286504,36.6560983,0
+      </coordinates></LinearRing></outerBoundaryIs></Polygon>
+    </Placemark>
+    <Placemark>
+      <name>Maison familiale</name>
+      <Polygon><outerBoundaryIs><LinearRing><coordinates>
+        10.2871752,36.6560781,0 10.2878463,36.6560489,0 10.2878217,36.6555983,0 10.2871506,36.6556275,0 10.2871752,36.6560781,0
+      </coordinates></LinearRing></outerBoundaryIs></Polygon>
+    </Placemark>
+  </Document>
+</kml>

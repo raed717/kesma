@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="KESMA samples" xmlns="http://www.topografix.com/GPX/1/1">
+  <trk><name>Tour de la parcelle</name><trkseg>
+    <trkpt lat="36.6560983" lon="10.286501000000001"></trkpt>
+    <trkpt lat="36.655979" lon="10.2899756"></trkpt>
+    <trkpt lat="36.6587003" lon="10.2902618"></trkpt>
+    <trkpt lat="36.6590675" lon="10.2882008"></trkpt>
+    <trkpt lat="36.6588031" lon="10.2863129"></trkpt>
+    <trkpt lat="36.6560983" lon="10.286508000000001"></trkpt>
+  </trkseg></trk>
+</gpx>

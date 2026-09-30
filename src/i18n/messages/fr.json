@@ -1,0 +1,267 @@
+{
+  "app": {
+    "name": "KESMA",
+    "tagline": "Visualiser, partager et comparer des scénarios de division foncière",
+    "disclaimerShort": "Outil de planification et de visualisation — ni juridique, ni cadastral, ni d'évaluation officielle."
+  },
+  "common": {
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "create": "Créer",
+    "delete": "Supprimer",
+    "rename": "Renommer",
+    "duplicate": "Dupliquer",
+    "export": "Exporter",
+    "import": "Importer",
+    "back": "Retour",
+    "loading": "Chargement…",
+    "name": "Nom",
+    "description": "Description",
+    "optional": "facultatif",
+    "comingSoon": "Prévu dans un prochain sprint",
+    "next": "Suivant"
+  },
+  "disclaimer": {
+    "title": "Avant de commencer",
+    "body1": "KESMA aide les familles et les professionnels à visualiser, mesurer et comparer différentes divisions possibles d'un terrain.",
+    "body2": "L'application ne détermine ni les droits successoraux, ni la propriété, ni les limites cadastrales officielles, ni la valeur officielle des terrains. Toute division définitive doit être validée par les professionnels (géomètre, notaire, avocat) et les autorités compétentes.",
+    "body3": "Vos données restent sur cet appareil : rien n'est envoyé à un serveur. Exportez régulièrement vos projets pour en garder une sauvegarde.",
+    "accept": "J'ai compris"
+  },
+  "home": {
+    "title": "Vos projets",
+    "subtitle": "Les projets sont enregistrés uniquement dans ce navigateur.",
+    "newProject": "Nouveau projet",
+    "importProject": "Importer un fichier projet",
+    "emptyTitle": "Aucun projet pour l'instant",
+    "emptyBody": "Créez un projet de division foncière, ou importez un fichier .kesma.json qui vous a été partagé.",
+    "updated": "Modifié le {date}",
+    "parcels": "{count, plural, =0 {Aucune parcelle} one {# parcelle} other {# parcelles}}",
+    "beneficiaries": "{count, plural, =0 {Aucun bénéficiaire} one {# bénéficiaire} other {# bénéficiaires}}",
+    "scenarios": "{count, plural, =0 {Aucun scénario} one {# scénario} other {# scénarios}}",
+    "open": "Ouvrir",
+    "actions": "Actions du projet",
+    "exportFile": "Exporter le fichier",
+    "backupHint": "Astuce : exportez régulièrement vos projets — effacer les données du navigateur les supprime."
+  },
+  "projectForm": {
+    "createTitle": "Nouveau projet",
+    "createDescription": "Un projet regroupe une propriété, ses bénéficiaires et les scénarios de division.",
+    "renameTitle": "Renommer le projet",
+    "duplicateTitle": "Dupliquer le projet",
+    "namePlaceholder": "ex. Famille Ben Ali — Succession 2026",
+    "descriptionPlaceholder": "Contexte, localisation, notes…",
+    "nameRequired": "Veuillez saisir un nom",
+    "copyOf": "{name} (copie)"
+  },
+  "deleteProject": {
+    "title": "Supprimer ce projet ?",
+    "body": "« {name} » et tous ses scénarios seront définitivement supprimés de ce navigateur. Exportez-le d'abord si vous souhaitez en garder une copie.",
+    "confirm": "Supprimer définitivement"
+  },
+  "toast": {
+    "created": "Projet créé",
+    "renamed": "Projet renommé",
+    "duplicated": "Projet dupliqué",
+    "deleted": "Projet supprimé",
+    "exported": "Fichier projet téléchargé",
+    "imported": "Projet « {name} » importé",
+    "importedAsCopy": "Un projet avec le même identifiant existait déjà : importé comme nouveau projet.",
+    "importFailed": "Échec de l'import",
+    "saveFailed": "Les modifications n'ont pas pu être enregistrées dans ce navigateur"
+  },
+  "workspace": {
+    "notFound": "Projet introuvable",
+    "notFoundBody": "Il a peut-être été supprimé, ou créé dans un autre navigateur.",
+    "loadError": "Ce projet n'a pas pu être chargé.",
+    "backToProjects": "Retour aux projets",
+    "saved": "Enregistré",
+    "saving": "Enregistrement…",
+    "pending": "Modifications non enregistrées",
+    "saveError": "Échec de l'enregistrement",
+    "togglePanel": "Afficher/masquer le panneau",
+    "tabs": {
+      "property": "Propriété",
+      "beneficiaries": "Héritiers",
+      "scenarios": "Scénarios",
+      "settings": "Paramètres"
+    },
+    "beneficiaries": {
+      "empty": "Aucun bénéficiaire",
+      "emptyBody": "Ajoutez les héritiers ou copropriétaires et définissez leurs parts en fractions, pourcentages ou surfaces."
+    },
+    "scenarios": {
+      "empty": "Aucun scénario",
+      "emptyBody": "Créez des scénarios de division, dessinez des lots et comparez les attributions."
+    }
+  },
+  "settings": {
+    "title": "Paramètres du projet",
+    "areaUnit": "Unité de surface",
+    "units": {
+      "m2": "Mètres carrés (m²)",
+      "a": "Ares (a)",
+      "ha": "Hectares (ha)"
+    },
+    "currency": "Devise",
+    "tolerance": "Tolérance de surface (%)",
+    "toleranceHint": "Écart accepté entre la surface attribuée et la surface cible d'un bénéficiaire."
+  },
+  "map": {
+    "tools": {
+      "pan": "Naviguer",
+      "measureDistance": "Mesurer une distance",
+      "measureArea": "Mesurer une surface"
+    },
+    "basemaps": {
+      "label": "Fond de carte",
+      "streets": "Plan",
+      "satellite": "Satellite",
+      "hybrid": "Hybride"
+    },
+    "measure": {
+      "distanceTitle": "Distance",
+      "areaTitle": "Surface",
+      "distance": "Longueur",
+      "area": "Surface",
+      "areaM2": "En m²",
+      "perimeter": "Périmètre",
+      "hintDistance": "Cliquez sur la carte pour ajouter des points.",
+      "hintArea": "Cliquez au moins 3 points pour délimiter une surface.",
+      "finish": "Terminer",
+      "undo": "Annuler",
+      "clear": "Effacer",
+      "keys": "Double-clic ou Entrée : terminer · Retour arrière : annuler · Échap : effacer"
+    }
+  },
+  "header": {
+    "language": "Langue",
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "property": {
+    "import": "Importer un fichier",
+    "drawOnMap": "Dessiner sur la carte",
+    "emptyTitle": "Aucune propriété",
+    "emptyBody": "Importez un fichier GeoJSON, KML/KMZ, Shapefile (.zip), GPX ou CSV, ou dessinez la propriété sur la carte.",
+    "totalArea": "Surface totale de la propriété",
+    "parcelCount": "{count, plural, one {# parcelle} other {# parcelles}}",
+    "parcelList": "Parcelles d'origine",
+    "defaultLabel": "Parcelle",
+    "draw": {
+      "title": "Dessiner la propriété",
+      "hint": "Cliquez pour placer chaque sommet. Cliquez sur le premier point ou appuyez sur Entrée pour terminer.",
+      "cancel": "Annuler"
+    },
+    "details": {
+      "area": "Surface",
+      "areaM2": "En m²",
+      "perimeter": "Périmètre",
+      "vertices": "Sommets",
+      "centroid": "Centre (lat, lon)",
+      "source": "Source",
+      "label": "Nom / identifiant de la parcelle",
+      "landUse": "Occupation du sol",
+      "landUses": {
+        "agricultural": "Agricole",
+        "residential": "Résidentiel",
+        "forest": "Forêt",
+        "unused": "Non exploité",
+        "mixed": "Mixte",
+        "other": "Autre"
+      },
+      "characteristics": "Caractéristiques",
+      "roadAccess": "Accès à la route",
+      "waterAccess": "Accès à l'eau (puits, réseau…)",
+      "irrigation": "Irrigation",
+      "buildings": "Constructions existantes",
+      "buildingsPlaceholder": "ex. maison 120 m², hangar",
+      "ownership": "Informations de propriété",
+      "ownershipPlaceholder": "ex. n° de titre foncier, propriétaire inscrit",
+      "notes": "Notes",
+      "zoomTo": "Centrer",
+      "deleteTitle": "Supprimer cette parcelle ?",
+      "deleteBody": "« {name} » sera retirée de la propriété.",
+      "formats": {
+        "geojson": "GeoJSON",
+        "kml": "KML",
+        "kmz": "KMZ",
+        "shapefile": "Shapefile",
+        "csv": "CSV",
+        "gpx": "GPX",
+        "drawn": "Dessinée sur la carte"
+      }
+    }
+  },
+  "import": {
+    "title": "Importer la propriété",
+    "steps": {
+      "pick": "Choisissez un fichier contenant les limites de la propriété.",
+      "csv": "Indiquez les colonnes qui contiennent les coordonnées.",
+      "review": "Vérifiez le système de coordonnées et choisissez les parcelles à importer."
+    },
+    "reading": "Lecture de {name}…",
+    "dropHere": "Déposez un fichier ici ou cliquez pour parcourir",
+    "formats": "GeoJSON · KML · KMZ · Shapefile (.zip) · GPX · CSV",
+    "shapefileHint": "Shapefile : compressez ensemble les fichiers .shp, .shx, .dbf et .prj. CSV : une ligne par sommet de la limite, dans l'ordre.",
+    "csv": {
+      "x": "Colonne X / Longitude",
+      "y": "Colonne Y / Latitude",
+      "group": "Colonne parcelle (facultatif)",
+      "none": "Aucune — un seul polygone",
+      "hint": "Les points sont reliés dans l'ordre des lignes. Une colonne parcelle permet de créer plusieurs polygones.",
+      "rows": "{count, plural, one {# ligne} other {# lignes}}"
+    },
+    "crs": {
+      "label": "Système de coordonnées du fichier",
+      "choose": "Choisissez un système de coordonnées…",
+      "suggestion": "suggéré",
+      "known": {
+        "prj": "Lu dans le fichier .prj : {name}.",
+        "geojson-member": "Déclaré dans le fichier GeoJSON : {name}.",
+        "format": "{name} (standard pour ce format)."
+      },
+      "unsupported": "Le fichier déclare « {name} », non pris en charge. Choisissez le système correct.",
+      "suggested": "Aucun système déclaré. D'après les coordonnées, {name} est suggéré — vérifiez la localisation ci-dessous.",
+      "lonLat": "Aucun système déclaré ; les valeurs ressemblent à des longitudes/latitudes (WGS 84).",
+      "none": "Aucun système déclaré et les coordonnées ne correspondent à aucun système pris en charge en Tunisie."
+    },
+    "location": {
+      "inTunisia": "Localisé en Tunisie ({lat}, {lng}).",
+      "outside": "Attention : le centre est hors de Tunisie ({lat}, {lng}). Le système de coordonnées est peut-être incorrect."
+    },
+    "candidates": "Polygones trouvés",
+    "warnings": {
+      "linesConvertedToPolygons": "Des lignes/traces GPS ont été fermées pour former des polygones — vérifiez la forme.",
+      "pointsSkipped": "{points, plural, one {# point a été ignoré} other {# points ont été ignorés}}.",
+      "linesSkipped": "{lines, plural, one {# ligne trop courte a été ignorée} other {# lignes trop courtes ont été ignorées}}.",
+      "invalidSkipped": "{invalid, plural, one {# forme invalide a été ignorée} other {# formes invalides ont été ignorées}}.",
+      "selfIntersections": "Certains polygones se croisent eux-mêmes (en rouge) ; leur surface n'est pas fiable. Ils ne sont pas sélectionnés par défaut.",
+      "outsideTunisia": "Hors de Tunisie"
+    },
+    "replace": "Remplacer {count, plural, one {la parcelle existante} other {les # parcelles existantes}}",
+    "selectedSummary": "{count, plural, =0 {Aucune parcelle sélectionnée} one {# parcelle sélectionnée} other {# parcelles sélectionnées}} · {area}",
+    "confirm": "{count, plural, =0 {Importer} one {Importer # parcelle} other {Importer # parcelles}}",
+    "done": "{count, plural, one {# parcelle importée} other {# parcelles importées}}",
+    "errors": {
+      "unsupportedFormat": "Ce type de fichier n'est pas pris en charge.",
+      "emptyFile": "Le fichier est vide.",
+      "tooLarge": "Le fichier est trop volumineux (50 Mo max).",
+      "invalidJson": "Le fichier n'est pas un JSON valide.",
+      "invalidGeoJson": "Le fichier n'est pas un GeoJSON valide.",
+      "invalidXml": "Le fichier n'est pas un XML valide (KML/GPX).",
+      "noKmlInKmz": "Aucun document KML trouvé dans le fichier KMZ.",
+      "noShpInZip": "Aucun fichier .shp trouvé dans l'archive ZIP.",
+      "shpNotZipped": "Les Shapefiles doivent être importés dans un seul .zip contenant .shp, .shx, .dbf et .prj.",
+      "invalidShapefile": "Le Shapefile n'a pas pu être lu.",
+      "csvNoRows": "Le fichier CSV ne contient aucune ligne de données (une ligne d'en-tête est requise).",
+      "csvNotEnoughPoints": "Il faut au moins 3 points pour former un polygone.",
+      "noCoordinates": "Aucune coordonnée valide dans les colonnes choisies.",
+      "noAreaFeatures": "Aucun polygone trouvé dans ce fichier (avec ce système de coordonnées).",
+      "reprojectionFailed": "Les coordonnées n'ont pas pu être converties depuis ce système.",
+      "unexpected": "Erreur inattendue lors de la lecture du fichier."
+    }
+  }
+}

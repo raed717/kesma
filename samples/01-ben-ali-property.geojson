@@ -1,0 +1,44 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Terre agricole — Henchir",
+        "landuse": "agricultural"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [10.286504, 36.6560983],
+            [10.2899716, 36.655979],
+            [10.2902648, 36.6587003],
+            [10.2881968, 36.6590675],
+            [10.2863159, 36.6588031],
+            [10.286504, 36.6560983]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Maison familiale",
+        "landuse": "residential"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [10.2871752, 36.6560781],
+            [10.2878463, 36.6560489],
+            [10.2878217, 36.6555983],
+            [10.2871506, 36.6556275],
+            [10.2871752, 36.6560781]
+          ]
+        ]
+      }
+    }
+  ]
+}

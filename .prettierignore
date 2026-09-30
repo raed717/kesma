@@ -1,0 +1,12 @@
+.next
+node_modules
+pnpm-lock.yaml
+coverage
+playwright-report
+test-results
+src/components/ui
+project-context.md
+docs
+public/vendor
+AGENTS.md
+CLAUDE.md

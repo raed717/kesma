@@ -1,0 +1,267 @@
+{
+  "app": {
+    "name": "KESMA",
+    "tagline": "Visualize, divide and compare land-division scenarios",
+    "disclaimerShort": "Planning and visualization tool — not a legal, cadastral or valuation instrument."
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "create": "Create",
+    "delete": "Delete",
+    "rename": "Rename",
+    "duplicate": "Duplicate",
+    "export": "Export",
+    "import": "Import",
+    "back": "Back",
+    "loading": "Loading…",
+    "name": "Name",
+    "description": "Description",
+    "optional": "optional",
+    "comingSoon": "Coming in a later sprint",
+    "next": "Next"
+  },
+  "disclaimer": {
+    "title": "Before you start",
+    "body1": "KESMA helps families and professionals visualize, measure and compare possible land divisions.",
+    "body2": "It does not determine legal inheritance rights, ownership, official cadastral boundaries or official land values. Any final division must be validated by the competent professionals (surveyor, notary, lawyer) and authorities.",
+    "body3": "Your data stays on this device: nothing is sent to a server. Export your projects regularly to keep a backup.",
+    "accept": "I understand"
+  },
+  "home": {
+    "title": "Your projects",
+    "subtitle": "Projects are stored in this browser only.",
+    "newProject": "New project",
+    "importProject": "Import project file",
+    "emptyTitle": "No projects yet",
+    "emptyBody": "Create a land-division project, or import a .kesma.json file shared with you.",
+    "updated": "Updated {date}",
+    "parcels": "{count, plural, =0 {No parcels} one {# parcel} other {# parcels}}",
+    "beneficiaries": "{count, plural, =0 {No beneficiaries} one {# beneficiary} other {# beneficiaries}}",
+    "scenarios": "{count, plural, =0 {No scenarios} one {# scenario} other {# scenarios}}",
+    "open": "Open",
+    "actions": "Project actions",
+    "exportFile": "Export file",
+    "backupHint": "Tip: export your projects regularly — clearing browser data deletes them."
+  },
+  "projectForm": {
+    "createTitle": "New project",
+    "createDescription": "A project groups a property, its beneficiaries and the division scenarios.",
+    "renameTitle": "Rename project",
+    "duplicateTitle": "Duplicate project",
+    "namePlaceholder": "e.g. Family Ben Ali — Inheritance 2026",
+    "descriptionPlaceholder": "Context, location, notes…",
+    "nameRequired": "Please enter a name",
+    "copyOf": "{name} (copy)"
+  },
+  "deleteProject": {
+    "title": "Delete this project?",
+    "body": "“{name}” and all its scenarios will be permanently deleted from this browser. Export it first if you want to keep a copy.",
+    "confirm": "Delete permanently"
+  },
+  "toast": {
+    "created": "Project created",
+    "renamed": "Project renamed",
+    "duplicated": "Project duplicated",
+    "deleted": "Project deleted",
+    "exported": "Project file downloaded",
+    "imported": "Project “{name}” imported",
+    "importedAsCopy": "A project with the same id already existed: imported as a new project.",
+    "importFailed": "Import failed",
+    "saveFailed": "Changes could not be saved in this browser"
+  },
+  "workspace": {
+    "notFound": "Project not found",
+    "notFoundBody": "It may have been deleted, or it was created in another browser.",
+    "loadError": "This project could not be loaded.",
+    "backToProjects": "Back to projects",
+    "saved": "Saved",
+    "saving": "Saving…",
+    "pending": "Unsaved changes",
+    "saveError": "Save failed",
+    "togglePanel": "Toggle side panel",
+    "tabs": {
+      "property": "Property",
+      "beneficiaries": "Heirs",
+      "scenarios": "Scenarios",
+      "settings": "Settings"
+    },
+    "beneficiaries": {
+      "empty": "No beneficiaries yet",
+      "emptyBody": "Add heirs or co-owners and define their shares as fractions, percentages or surfaces."
+    },
+    "scenarios": {
+      "empty": "No scenarios yet",
+      "emptyBody": "Create division scenarios, draw lots and compare allocations."
+    }
+  },
+  "settings": {
+    "title": "Project settings",
+    "areaUnit": "Area unit",
+    "units": {
+      "m2": "Square metres (m²)",
+      "a": "Ares (a)",
+      "ha": "Hectares (ha)"
+    },
+    "currency": "Currency",
+    "tolerance": "Area tolerance (%)",
+    "toleranceHint": "Accepted deviation between a beneficiary's allocated and target area."
+  },
+  "map": {
+    "tools": {
+      "pan": "Navigate",
+      "measureDistance": "Measure distance",
+      "measureArea": "Measure area"
+    },
+    "basemaps": {
+      "label": "Basemap",
+      "streets": "Streets",
+      "satellite": "Satellite",
+      "hybrid": "Hybrid"
+    },
+    "measure": {
+      "distanceTitle": "Distance",
+      "areaTitle": "Area",
+      "distance": "Length",
+      "area": "Area",
+      "areaM2": "In m²",
+      "perimeter": "Perimeter",
+      "hintDistance": "Click on the map to add points.",
+      "hintArea": "Click at least 3 points to outline an area.",
+      "finish": "Finish",
+      "undo": "Undo",
+      "clear": "Clear",
+      "keys": "Double-click or Enter: finish · Backspace: undo · Esc: clear"
+    }
+  },
+  "header": {
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "property": {
+    "import": "Import file",
+    "drawOnMap": "Draw on map",
+    "emptyTitle": "No property yet",
+    "emptyBody": "Import a GeoJSON, KML/KMZ, Shapefile (.zip), GPX or CSV file, or draw the property on the map.",
+    "totalArea": "Total property area",
+    "parcelCount": "{count, plural, one {# parcel} other {# parcels}}",
+    "parcelList": "Original parcels",
+    "defaultLabel": "Parcel",
+    "draw": {
+      "title": "Draw the property",
+      "hint": "Click to place each corner. Click the first point or press Enter to finish.",
+      "cancel": "Cancel"
+    },
+    "details": {
+      "area": "Area",
+      "areaM2": "In m²",
+      "perimeter": "Perimeter",
+      "vertices": "Vertices",
+      "centroid": "Centre (lat, lon)",
+      "source": "Source",
+      "label": "Parcel name / identifier",
+      "landUse": "Land use",
+      "landUses": {
+        "agricultural": "Agricultural",
+        "residential": "Residential",
+        "forest": "Forest",
+        "unused": "Unused",
+        "mixed": "Mixed",
+        "other": "Other"
+      },
+      "characteristics": "Characteristics",
+      "roadAccess": "Road access",
+      "waterAccess": "Water access (well, network…)",
+      "irrigation": "Irrigation",
+      "buildings": "Existing buildings",
+      "buildingsPlaceholder": "e.g. house 120 m², storage shed",
+      "ownership": "Ownership information",
+      "ownershipPlaceholder": "e.g. title deed no., registered owner",
+      "notes": "Notes",
+      "zoomTo": "Zoom to",
+      "deleteTitle": "Delete this parcel?",
+      "deleteBody": "“{name}” will be removed from the property.",
+      "formats": {
+        "geojson": "GeoJSON",
+        "kml": "KML",
+        "kmz": "KMZ",
+        "shapefile": "Shapefile",
+        "csv": "CSV",
+        "gpx": "GPX",
+        "drawn": "Drawn on map"
+      }
+    }
+  },
+  "import": {
+    "title": "Import the property",
+    "steps": {
+      "pick": "Choose a file containing the property boundaries.",
+      "csv": "Tell KESMA which columns contain the coordinates.",
+      "review": "Check the coordinate system and choose the parcels to import."
+    },
+    "reading": "Reading {name}…",
+    "dropHere": "Drop a file here or click to browse",
+    "formats": "GeoJSON · KML · KMZ · Shapefile (.zip) · GPX · CSV",
+    "shapefileHint": "Shapefile: zip the .shp, .shx, .dbf and .prj files together. CSV: one row per boundary point, in order.",
+    "csv": {
+      "x": "X / Longitude column",
+      "y": "Y / Latitude column",
+      "group": "Parcel column (optional)",
+      "none": "None — one polygon",
+      "hint": "Points are joined in row order. Use a parcel column to build several polygons.",
+      "rows": "{count, plural, one {# row} other {# rows}}"
+    },
+    "crs": {
+      "label": "Coordinate system of the file",
+      "choose": "Choose a coordinate system…",
+      "suggestion": "suggested",
+      "known": {
+        "prj": "Read from the .prj file: {name}.",
+        "geojson-member": "Declared in the GeoJSON file: {name}.",
+        "format": "{name} (standard for this format)."
+      },
+      "unsupported": "The file declares “{name}”, which is not supported. Choose the correct system.",
+      "suggested": "No coordinate system declared. Based on the coordinates, {name} is suggested — please check the location below.",
+      "lonLat": "No coordinate system declared; the values look like longitude/latitude (WGS 84).",
+      "none": "No coordinate system declared and the coordinates do not match any supported system in Tunisia."
+    },
+    "location": {
+      "inTunisia": "Located in Tunisia ({lat}, {lng}).",
+      "outside": "Warning: centre is outside Tunisia ({lat}, {lng}). The coordinate system may be wrong."
+    },
+    "candidates": "Polygons found",
+    "warnings": {
+      "linesConvertedToPolygons": "Lines/GPS tracks were closed to form polygons — check the shape.",
+      "pointsSkipped": "{points, plural, one {# point was ignored} other {# points were ignored}}.",
+      "linesSkipped": "{lines, plural, one {# line was too short and ignored} other {# lines were too short and ignored}}.",
+      "invalidSkipped": "{invalid, plural, one {# invalid shape was ignored} other {# invalid shapes were ignored}}.",
+      "selfIntersections": "Some polygons cross themselves (shown in red); their area is unreliable. They are not selected by default.",
+      "outsideTunisia": "Outside Tunisia"
+    },
+    "replace": "Replace the {count, plural, one {existing parcel} other {# existing parcels}}",
+    "selectedSummary": "{count, plural, =0 {No parcel selected} one {# parcel selected} other {# parcels selected}} · {area}",
+    "confirm": "{count, plural, =0 {Import} one {Import # parcel} other {Import # parcels}}",
+    "done": "{count, plural, one {# parcel imported} other {# parcels imported}}",
+    "errors": {
+      "unsupportedFormat": "This file type is not supported.",
+      "emptyFile": "The file is empty.",
+      "tooLarge": "The file is too large (max 50 MB).",
+      "invalidJson": "The file is not valid JSON.",
+      "invalidGeoJson": "The file is not valid GeoJSON.",
+      "invalidXml": "The file is not valid XML (KML/GPX).",
+      "noKmlInKmz": "No KML document found inside the KMZ file.",
+      "noShpInZip": "No .shp file found in the ZIP archive.",
+      "shpNotZipped": "Shapefiles must be imported as a single .zip containing .shp, .shx, .dbf and .prj.",
+      "invalidShapefile": "The Shapefile could not be read.",
+      "csvNoRows": "The CSV file has no data rows (a header row is required).",
+      "csvNotEnoughPoints": "At least 3 points are needed to form a polygon.",
+      "noCoordinates": "No valid coordinates found in the selected columns.",
+      "noAreaFeatures": "No polygon found in this file (with this coordinate system).",
+      "reprojectionFailed": "Coordinates could not be converted from this coordinate system.",
+      "unexpected": "Unexpected error while reading the file."
+    }
+  }
+}
