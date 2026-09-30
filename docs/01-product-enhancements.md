@@ -38,7 +38,7 @@ The context uses "parcel" for two different things. That will cause confusion in
 ### 2.2 Shares as exact fractions, not only percentages
 Inheritance shares, especially in Tunisia and other countries using Islamic inheritance rules (farāʾiḍ), are expressed as **fractions**: 1/8, 1/6, 2/3, or residual shares. Percentages such as 33.33% cause rounding drift.
 
-- Users can enter a share as a **fraction** (`7/24`), a **percentage**, or a **surface target**.
+- Users can enter a share as a **fraction** (`7/24`), a **percentage**, a **surface target**, or a **weighted part of the remainder**. The remainder is whatever the fixed shares leave, split between "remainder" heirs by weight, e.g. spouse 1/8, then sons weight 2 and daughters weight 1. *(Added in S3.)*
 - Calculations use exact fractional arithmetic and round only for display.
 - Validation checks that shares sum to exactly 1 (100%).
 - *Future:* an optional "farāʾiḍ assistant" that suggests shares from the family structure. It would always carry a legal disclaimer (§19 of the context).

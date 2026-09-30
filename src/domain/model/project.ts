@@ -66,6 +66,11 @@ export const ShareSchema = z.discriminatedUnion("mode", [
   }),
   z.object({ mode: z.literal("percent"), value: z.number().min(0).max(100) }),
   z.object({ mode: z.literal("area"), m2: z.number().min(0) }),
+  /**
+   * Takes part of whatever the fixed shares leave, proportionally to `weight`
+   * (e.g. residual heirs; a son with weight 2 and a daughter with weight 1).
+   */
+  z.object({ mode: z.literal("remainder"), weight: z.number().positive().max(1000) }),
 ]);
 export type Share = z.infer<typeof ShareSchema>;
 

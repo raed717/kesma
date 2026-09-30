@@ -86,14 +86,11 @@
       "scenarios": "Scenarios",
       "settings": "Settings"
     },
-    "beneficiaries": {
-      "empty": "No beneficiaries yet",
-      "emptyBody": "Add heirs or co-owners and define their shares as fractions, percentages or surfaces."
-    },
     "scenarios": {
       "empty": "No scenarios yet",
       "emptyBody": "Create division scenarios, draw lots and compare allocations."
-    }
+    },
+    "projectName": "Project name"
   },
   "settings": {
     "title": "Project settings",
@@ -262,6 +259,57 @@
       "noAreaFeatures": "No polygon found in this file (with this coordinate system).",
       "reprojectionFailed": "Coordinates could not be converted from this coordinate system.",
       "unexpected": "Unexpected error while reading the file."
+    }
+  },
+  "beneficiaries": {
+    "emptyTitle": "No beneficiaries yet",
+    "emptyBody": "Add the heirs or co-owners, then enter each share as a fraction (1/8, 7/24…), a percentage, a target area or a part of the remainder.",
+    "add": "Add a beneficiary",
+    "splitEqually": "Split equally",
+    "listLabel": "Beneficiaries",
+    "defaultName": "Heir {n}",
+    "legalNote": "You enter the shares. KESMA does not determine legal inheritance rights — have them confirmed by a notary or lawyer.",
+    "modeBadge": {
+      "fraction": "Fixed fraction",
+      "percent": "Percentage",
+      "area": "Target area",
+      "remainder": "Part of the remainder × {weight}"
+    },
+    "summary": {
+      "complete": "Shares add up to the whole property.",
+      "under": "Not yet allocated: {gap}",
+      "over": "Shares exceed the property by {gap}",
+      "needsProperty": "Area-based shares need the property: import or draw it first.",
+      "invalid": "One of the shares is invalid.",
+      "remainderStarved": "Beneficiaries taking “the remainder” receive nothing: fixed shares already cover the whole property.",
+      "noPropertyYet": "Target areas will appear once the property is imported or drawn.",
+      "barLabel": "Distribution of shares"
+    },
+    "editor": {
+      "name": "Name",
+      "color": "Colour",
+      "customColor": "Custom colour",
+      "share": "Share",
+      "modes": {
+        "fraction": "Fraction",
+        "percent": "%",
+        "area": "Area",
+        "remainder": "Remainder"
+      },
+      "fractionLabel": "Fraction of the property",
+      "fractionHint": "e.g. 1/8, 7/24 or 1",
+      "fractionInvalid": "Enter a fraction such as 1/8 (whole numbers, denominator > 0).",
+      "percentLabel": "Percentage of the property",
+      "percentInvalid": "Enter a percentage between 0 and 100.",
+      "areaLabel": "Target area",
+      "areaNeedsProperty": "Needs the property area (import or draw the property).",
+      "areaInvalid": "Enter a positive area.",
+      "weightLabel": "Weight in the remainder",
+      "weightHint": "Share of what the fixed shares leave, proportional to the weight (e.g. son = 2, daughter = 1).",
+      "weightInvalid": "Enter a weight greater than 0.",
+      "notes": "Notes",
+      "deleteTitle": "Remove this beneficiary?",
+      "deleteBody": "“{name}” will be removed from the project."
     }
   }
 }

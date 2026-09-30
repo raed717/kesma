@@ -48,6 +48,8 @@ export function SettingsPanel() {
       <div className="space-y-2">
         <Label htmlFor={`${ids}-currency`}>{t("currency")}</Label>
         <Input
+          // Remount when the saved value changes: Base UI inputs warn if defaultValue changes.
+          key={settings.currency}
           id={`${ids}-currency`}
           defaultValue={settings.currency}
           maxLength={8}
@@ -64,6 +66,7 @@ export function SettingsPanel() {
       <div className="space-y-2">
         <Label htmlFor={`${ids}-tolerance`}>{t("tolerance")}</Label>
         <Input
+          key={settings.areaTolerancePct}
           id={`${ids}-tolerance`}
           type="number"
           min={0}

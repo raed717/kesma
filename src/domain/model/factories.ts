@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import type { AreaGeometry } from "./geojson";
 import {
   CURRENT_SCHEMA_VERSION,
+  type Beneficiary,
   type OriginalParcel,
   type ParcelAttributes,
   type Project,
@@ -67,6 +68,20 @@ export function createParcel(
     geometry: input.geometry,
     attributes: input.attributes ?? {},
     ...(input.source ? { source: input.source } : {}),
+  };
+}
+
+export function createBeneficiary(
+  input: { name: string; color: string; share?: Beneficiary["share"]; notes?: string },
+  deps: FactoryDeps = {},
+): Beneficiary {
+  return {
+    id: newId(deps),
+    name: input.name.trim(),
+    color: input.color,
+    // Default: an equal part of whatever is not fixed — adding N heirs gives 1/N each.
+    share: input.share ?? { mode: "remainder", weight: 1 },
+    ...(input.notes ? { notes: input.notes } : {}),
   };
 }
 

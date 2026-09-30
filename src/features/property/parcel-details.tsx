@@ -88,6 +88,8 @@ export function ParcelDetails({ parcel }: { parcel: OriginalParcel }) {
 
       <Field label={t("label")} htmlFor={`${ids}-label`}>
         <Input
+          // Remount when the saved value changes: Base UI inputs warn if defaultValue changes.
+          key={parcel.label}
           id={`${ids}-label`}
           defaultValue={parcel.label}
           maxLength={80}
@@ -134,6 +136,7 @@ export function ParcelDetails({ parcel }: { parcel: OriginalParcel }) {
 
       <Field label={t("buildings")} htmlFor={`${ids}-buildings`}>
         <Input
+          key={a.buildings ?? ""}
           id={`${ids}-buildings`}
           defaultValue={a.buildings ?? ""}
           placeholder={t("buildingsPlaceholder")}
@@ -143,6 +146,7 @@ export function ParcelDetails({ parcel }: { parcel: OriginalParcel }) {
 
       <Field label={t("ownership")} htmlFor={`${ids}-ownership`}>
         <Input
+          key={a.ownership ?? ""}
           id={`${ids}-ownership`}
           defaultValue={a.ownership ?? ""}
           placeholder={t("ownershipPlaceholder")}

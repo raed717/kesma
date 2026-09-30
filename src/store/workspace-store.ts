@@ -78,7 +78,9 @@ export const useWorkspaceStore = create<WorkspaceState>()((set, get) => {
       if (next === project) return;
       set({ project: next, saveState: "pending" });
       clearTimeout(saveTimer);
-      if (immediate) void persist();
+      // Hidden tabs throttle timers (up to a minute), so a debounced save could be lost.
+      const hidden = typeof document !== "undefined" && document.visibilityState === "hidden";
+      if (immediate || hidden) void persist();
       else saveTimer = setTimeout(persist, AUTOSAVE_DELAY_MS);
     },
 

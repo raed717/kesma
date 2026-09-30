@@ -1,4 +1,4 @@
-﻿# KESMA — Tech Stack & Libraries (MVP)
+# KESMA — Tech Stack & Libraries (MVP)
 
 > Constraints: Next.js, no database, no auth, all data stored in the browser. The domain logic must be reusable once a backend is added.
 

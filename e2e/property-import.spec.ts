@@ -1,4 +1,4 @@
-﻿import { join } from "node:path";
+import { join } from "node:path";
 import { expect, test } from "@playwright/test";
 
 const SAMPLES = join(__dirname, "..", "samples");

@@ -4,6 +4,7 @@ import { Layers, Map as MapIcon, Settings, Users } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BeneficiariesPanel } from "../beneficiaries/beneficiaries-panel";
 import { PropertyPanel } from "../property/property-panel";
 import { SettingsPanel } from "./settings-panel";
 
@@ -33,11 +34,7 @@ export function SidePanel() {
           <PropertyPanel />
         </TabsContent>
         <TabsContent value="beneficiaries">
-          <EmptyState
-            icon={<Users />}
-            title={t("beneficiaries.empty")}
-            body={t("beneficiaries.emptyBody")}
-          />
+          <BeneficiariesPanel />
         </TabsContent>
         <TabsContent value="scenarios">
           <EmptyState

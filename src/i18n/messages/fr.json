@@ -86,14 +86,11 @@
       "scenarios": "Scénarios",
       "settings": "Paramètres"
     },
-    "beneficiaries": {
-      "empty": "Aucun bénéficiaire",
-      "emptyBody": "Ajoutez les héritiers ou copropriétaires et définissez leurs parts en fractions, pourcentages ou surfaces."
-    },
     "scenarios": {
       "empty": "Aucun scénario",
       "emptyBody": "Créez des scénarios de division, dessinez des lots et comparez les attributions."
-    }
+    },
+    "projectName": "Nom du projet"
   },
   "settings": {
     "title": "Paramètres du projet",
@@ -262,6 +259,57 @@
       "noAreaFeatures": "Aucun polygone trouvé dans ce fichier (avec ce système de coordonnées).",
       "reprojectionFailed": "Les coordonnées n'ont pas pu être converties depuis ce système.",
       "unexpected": "Erreur inattendue lors de la lecture du fichier."
+    }
+  },
+  "beneficiaries": {
+    "emptyTitle": "Aucun bénéficiaire",
+    "emptyBody": "Ajoutez les héritiers ou copropriétaires, puis saisissez chaque part en fraction (1/8, 7/24…), en pourcentage, en surface cible ou en part du reste.",
+    "add": "Ajouter un bénéficiaire",
+    "splitEqually": "Parts égales",
+    "listLabel": "Bénéficiaires",
+    "defaultName": "Héritier {n}",
+    "legalNote": "C'est vous qui saisissez les parts. KESMA ne détermine pas les droits successoraux — faites-les confirmer par un notaire ou un avocat.",
+    "modeBadge": {
+      "fraction": "Fraction fixe",
+      "percent": "Pourcentage",
+      "area": "Surface cible",
+      "remainder": "Part du reste × {weight}"
+    },
+    "summary": {
+      "complete": "Les parts couvrent toute la propriété.",
+      "under": "Reste à attribuer : {gap}",
+      "over": "Les parts dépassent la propriété de {gap}",
+      "needsProperty": "Les parts en surface nécessitent la propriété : importez-la ou dessinez-la d'abord.",
+      "invalid": "Une des parts est invalide.",
+      "remainderStarved": "Les bénéficiaires « du reste » ne reçoivent rien : les parts fixes couvrent déjà toute la propriété.",
+      "noPropertyYet": "Les surfaces cibles apparaîtront une fois la propriété importée ou dessinée.",
+      "barLabel": "Répartition des parts"
+    },
+    "editor": {
+      "name": "Nom",
+      "color": "Couleur",
+      "customColor": "Couleur personnalisée",
+      "share": "Part",
+      "modes": {
+        "fraction": "Fraction",
+        "percent": "%",
+        "area": "Surface",
+        "remainder": "Reste"
+      },
+      "fractionLabel": "Fraction de la propriété",
+      "fractionHint": "ex. 1/8, 7/24 ou 1",
+      "fractionInvalid": "Saisissez une fraction comme 1/8 (nombres entiers, dénominateur > 0).",
+      "percentLabel": "Pourcentage de la propriété",
+      "percentInvalid": "Saisissez un pourcentage entre 0 et 100.",
+      "areaLabel": "Surface cible",
+      "areaNeedsProperty": "Nécessite la surface de la propriété (importez ou dessinez-la).",
+      "areaInvalid": "Saisissez une surface positive.",
+      "weightLabel": "Poids dans le reste",
+      "weightHint": "Part de ce que laissent les parts fixes, proportionnelle au poids (ex. fils = 2, fille = 1).",
+      "weightInvalid": "Saisissez un poids supérieur à 0.",
+      "notes": "Notes",
+      "deleteTitle": "Retirer ce bénéficiaire ?",
+      "deleteBody": "« {name} » sera retiré du projet."
     }
   }
 }

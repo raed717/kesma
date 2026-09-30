@@ -6,7 +6,7 @@ import { useWorkspaceStore } from "@/store/workspace-store";
 
 /** Inline-editable project title. Commits on blur / Enter, reverts on Escape. */
 export function ProjectNameEditor() {
-  const t = useTranslations("common");
+  const t = useTranslations("workspace");
   const name = useWorkspaceStore((s) => s.project?.name ?? "");
   const update = useWorkspaceStore((s) => s.update);
   // Only holds a value while the user is editing; otherwise the store is the source of truth.
@@ -25,7 +25,7 @@ export function ProjectNameEditor() {
 
   return (
     <input
-      aria-label={t("name")}
+      aria-label={t("projectName")}
       value={draft ?? name}
       maxLength={120}
       onFocus={() => setDraft(name)}

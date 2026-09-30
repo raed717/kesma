@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { ArrowLeft, Download, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -39,8 +39,13 @@ export function Workspace({ projectId }: { projectId: string }) {
     useMapUiStore.getState().setTool("pan");
     useMapUiStore.getState().selectParcel(null);
     const flush = () => void useWorkspaceStore.getState().flush();
+    // Saving when the tab becomes hidden is the reliable moment: the page is still alive,
+    // unlike during pagehide/unload where an IndexedDB write may not complete.
+    const onVisibility = () => document.visibilityState === "hidden" && flush();
+    document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("pagehide", flush);
     return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pagehide", flush);
       void useWorkspaceStore.getState().close();
     };

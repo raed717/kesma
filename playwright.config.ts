@@ -1,4 +1,4 @@
-﻿import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 
 // 3097-3296 is often reserved by Windows (Hyper-V). E2E_PORT=3000 reuses a running pnpm dev.
 const PORT = Number(process.env.E2E_PORT ?? 4100);

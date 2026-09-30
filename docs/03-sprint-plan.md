@@ -13,7 +13,8 @@
 | S0 | ✅ Done (2026-09-30) | Everything except S0-4 (deploy preview): no git repo or hosting account yet. The CI workflow is written but has never run. |
 | S1 | ✅ Done (2026-09-30) | 34 unit tests + 1 e2e passing. The "reload keeps the project" and "export → delete → import is identical" criteria are covered by automated tests. |
 | S2 | ✅ Done (2026-09-30) | All formats import with the Carthage datum shift handled. Areas are within ±0.1% of the reference; Shapefile vs GeoJSON positions agree to < 0.5 m. 76 unit + 4 e2e tests, plus a manual pass in Chrome (FR + AR). Sample files are in `/samples`. Found and fixed during testing: selection lost after drawing, measure panel showing while drawing, RTL map-control collisions, reversed number/unit in Arabic, and saves lost on a quick reload (now saved immediately). |
-| S3 | ⏳ Next | |
+| S3 | ✅ Done (2026-09-30) | Exact shares with fraction.js (fraction, percentage, target area, and a new **weighted remainder** mode for residual heirs). Live validation shows exact shortfall/excess, target areas and a stacked share bar. 96 unit + 6 e2e tests. The chart is a lightweight stacked bar; Recharts is deferred to S5 allocation charts. Found and fixed: edits lost when made in a background tab (now saved immediately when hidden), Base UI input warnings, and an ambiguous "Name" label. |
+| S4 | ⏳ Next | |
 
 ## Overview
 

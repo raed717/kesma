@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getProjectRepository } from "@/storage";
 import { sampleProject } from "@/test/fixtures";
 import { useWorkspaceStore } from "./workspace-store";
@@ -43,6 +43,18 @@ describe("workspace store", () => {
     await settle(); // ~100 ms, well under the 600 ms debounce
     expect(store().saveState).toBe("saved");
     expect((await getProjectRepository().get("p1"))?.name).toBe("Now");
+  });
+
+  it("saves immediately while the tab is hidden (timers are throttled there)", async () => {
+    await store().load("p1");
+    const spy = vi.spyOn(document, "visibilityState", "get").mockReturnValue("hidden");
+    try {
+      store().update((d) => void (d.name = "Hidden edit"));
+      await settle();
+      expect((await getProjectRepository().get("p1"))?.name).toBe("Hidden edit");
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it("close() still saves pending edits", async () => {
