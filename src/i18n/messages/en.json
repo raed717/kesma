@@ -86,7 +86,11 @@
       "scenarios": "Scenarios",
       "settings": "Settings"
     },
-    "projectName": "Project name"
+    "projectName": "Project name",
+    "history": {
+      "undo": "Undo (Ctrl+Z)",
+      "redo": "Redo (Ctrl+Y)"
+    }
   },
   "settings": {
     "title": "Project settings",
@@ -316,6 +320,22 @@
     "split": {
       "title": "Cut lots",
       "hint": "Draw a line across one or more lots (snaps to boundaries). Press Enter or click the last point again to cut."
+    },
+    "zone": {
+      "title": "Draw a value zone",
+      "hint": "Click each corner (snaps to the property boundary). Enter or first point to finish."
+    },
+    "assetPoint": {
+      "title": "Place an asset",
+      "hint": "Click on the map where the asset is (well, house…)."
+    },
+    "assetArea": {
+      "title": "Draw an asset area",
+      "hint": "Click each corner of the area (orchard, greenhouse…). Enter or first point to finish."
+    },
+    "frontage": {
+      "title": "Draw a road frontage",
+      "hint": "Click along the road (snaps to the property boundary). Enter or click the last point again to finish."
     }
   },
   "scenarios": {
@@ -361,7 +381,12 @@
       "longitude": "Longitude",
       "sharedVertex": "Shared with {count, plural, one {# lot} other {# lots}}",
       "coordinatesHint": "Editing a shared corner (●) also moves it in the neighbouring lots.",
-      "owner": "Assigned to"
+      "owner": "Assigned to",
+      "value": "Estimated value",
+      "valueWithAssets": "(incl. assets {assets})",
+      "frontage": "Road frontage",
+      "noRoadAccess": "No road access",
+      "assets": "Assets"
     },
     "toast": {
       "undo": "Undo",
@@ -375,7 +400,8 @@
         "locked": "Locked lots cannot be changed. Unlock them first.",
         "empty": "Nothing to add: the drawn shape is outside the property or already covered by lots.",
         "tooFew": "Select at least two lots (Shift+click).",
-        "notFound": "This lot no longer exists."
+        "notFound": "This lot no longer exists.",
+        "outside": "A lot cannot extend outside the property."
       },
       "fixed": "Fixed"
     },
@@ -418,7 +444,16 @@
         "warn": "Close to the tolerance",
         "off": "Outside tolerance",
         "noTarget": "No target area"
-      }
+      },
+      "metricLabel": "Compare by",
+      "metric": {
+        "area": "Area",
+        "value": "Value"
+      },
+      "roadAccessSummary": "{count} of {total} beneficiaries have road access",
+      "propertyValue": "Total estimated value: {value}",
+      "roadAccess": "Road access: {length} of frontage",
+      "noRoadAccess": "No road access"
     },
     "validation": {
       "checking": "Checking the scenario…",
@@ -463,6 +498,117 @@
         "assign": "Assign {name} to",
         "noLots": "Cut the property or draw lots in the Lots view."
       }
+    },
+    "autosplit": "Automatic division…",
+    "versionsMenu": "Versions ({count})…"
+  },
+  "value": {
+    "viewsLabel": "Property views",
+    "views": {
+      "parcels": "Parcels",
+      "value": "Value & access"
+    },
+    "propertyValue": "Estimated property value",
+    "noValueYet": "Set a base value per m², value zones or assets to estimate values.",
+    "baseValue": "Base value per m² ({currency})",
+    "baseValueHint": "Applies everywhere except inside value zones.",
+    "disclaimer": "Estimates for comparing lots only — not an official valuation.",
+    "name": "Name",
+    "color": "Colour",
+    "zones": {
+      "title": "Value zones",
+      "hint": "Areas worth more or less (irrigated, constructible, rocky…). Draw them on the map.",
+      "add": "Add zone",
+      "defaultName": "Zone",
+      "perM2Label": "{value} {currency}/m²",
+      "mode": "How the zone is valued",
+      "modes": {
+        "perM2": "Fixed value per m² ({currency})",
+        "multiplier": "Multiplier of the base value"
+      },
+      "needsBase": "Set a base value per m² for multipliers to have an effect.",
+      "multiplier": "Multiplier (e.g. 1.5)",
+      "perM2": "Value per m² ({currency})",
+      "up": "Higher priority",
+      "down": "Lower priority",
+      "priority": "Priority where zones overlap"
+    },
+    "assets": {
+      "title": "Assets",
+      "hint": "Wells, buildings, trees… with a fixed value. Add a point or draw an area.",
+      "addPoint": "Point",
+      "addArea": "Area",
+      "defaultName": "Asset",
+      "kind": "Type",
+      "kinds": {
+        "well": "Well",
+        "building": "Building",
+        "trees": "Trees / orchard",
+        "infrastructure": "Infrastructure",
+        "other": "Other"
+      },
+      "value": "Value ({currency})",
+      "pointRule": "Belongs entirely to the lot that contains it.",
+      "areaRule": "Shared between lots in proportion to the area they cover."
+    },
+    "frontage": {
+      "title": "Road frontage",
+      "hint": "Draw the roads along the property to measure each lot's road access.",
+      "add": "Draw road",
+      "defaultName": "Road"
     }
+  },
+  "autosplit": {
+    "title": "Automatic division by shares",
+    "description": "Cuts the property into parallel strips, one per beneficiary, matching each share by area or by value. You can edit the result like any scenario.",
+    "mode": "Match",
+    "modes": {
+      "area": "Area",
+      "value": "Estimated value"
+    },
+    "valueNeedsModel": "To divide by value, set a base value, value zones or assets (Property → Value & access).",
+    "direction": "Direction of the cut lines",
+    "presets": {
+      "northSouth": "North–south",
+      "eastWest": "East–west",
+      "longestEdge": "Along the longest side",
+      "road": "Perpendicular to the road"
+    },
+    "angle": "Angle of the cut lines",
+    "order": "Order of the strips",
+    "orderHint": "Strip 1 is on the side marked 1 in the preview.",
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down",
+    "sharesUnder": "Shares do not add up to 100 %: they are scaled up proportionally to cover the whole property.",
+    "name": "Scenario name",
+    "defaultName": {
+      "area": "Automatic — equal area",
+      "value": "Automatic — equal value"
+    },
+    "cancel": "Cancel",
+    "run": "Create scenario",
+    "done": "Scenario created — largest deviation {deviation}",
+    "lotPrefix": "Lot",
+    "errors": {
+      "noProperty": "Import or draw the property first.",
+      "noShares": "Add beneficiaries with shares first (Heirs tab).",
+      "shares": "Fix the shares first (Heirs tab): they are invalid or exceed the property.",
+      "noParts": "No beneficiary has a share greater than zero.",
+      "noValueModel": "Set up values first (Property → Value & access)."
+    }
+  },
+  "versions": {
+    "title": "Versions of “{name}”",
+    "description": "Save the current lots under a name to come back to them later.",
+    "nameLabel": "Version name",
+    "defaultName": "Version {n}",
+    "save": "Save",
+    "saved": "Version “{name}” saved",
+    "restored": "Version “{name}” restored (Ctrl+Z to undo)",
+    "empty": "No saved versions yet.",
+    "listLabel": "Saved versions",
+    "lots": "{count, plural, one {# lot} other {# lots}}",
+    "restore": "Restore",
+    "delete": "Delete {name}"
   }
 }

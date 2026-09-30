@@ -4,6 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 
 import { bbox, feature, featureCollection } from "@turf/turf";
 import { useLocale, useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Map, {
   AttributionControl,
@@ -13,9 +14,20 @@ import Map, {
   type MapLayerMouseEvent,
   type ViewStateChangeEvent,
 } from "react-map-gl/maplibre";
-import { createParcel, nextParcelLabel } from "@/domain/model/factories";
+import { createParcel, newId, nextParcelLabel } from "@/domain/model/factories";
 import type { LineString, Polygon, Position } from "@/domain/model/geojson";
-import type { BasemapId, Beneficiary, Lot, OriginalParcel, Project } from "@/domain/model/project";
+import type {
+  Asset,
+  BasemapId,
+  Beneficiary,
+  FrontageLine,
+  Lot,
+  OriginalParcel,
+  Project,
+  ValueZone,
+} from "@/domain/model/project";
+import { BENEFICIARY_COLORS } from "@/domain/shares";
+import { zoneValueLabel } from "@/features/value/value-panel";
 import {
   dismissLotUndo,
   setScenarioLots,
@@ -42,9 +54,20 @@ import { MeasureLayer } from "./measure-layer";
 import { MeasurePanel } from "./measure-panel";
 import { PROPERTY_FILL_LAYER, PropertyLayer } from "./property-layer";
 import { snapTargetsFrom } from "./snap";
+import {
+  ASSET_AREA_LAYER,
+  ASSET_LAYER,
+  FRONTAGE_LAYER,
+  VALUE_ZONE_LAYER,
+  ValueLayers,
+} from "./value-layers";
 
 const NO_PARCELS: OriginalParcel[] = [];
 const NO_BENEFICIARIES: Beneficiary[] = [];
+const NO_ZONES: ValueZone[] = [];
+const NO_ASSETS: Asset[] = [];
+const NO_FRONTAGE: FrontageLine[] = [];
+const VALUE_LAYERS = [ASSET_LAYER, FRONTAGE_LAYER, ASSET_AREA_LAYER, VALUE_ZONE_LAYER];
 
 export default function MapView() {
   const t = useTranslations("property");
@@ -63,7 +86,12 @@ export default function MapView() {
     selectedLotIds,
     selectLot,
     setTool,
+    propertyView,
+    selectedValueItem,
+    selectValueItem,
   } = useMapUiStore();
+  const tValue = useTranslations("value");
+  const locale = useLocale();
   const [hover, setHover] = useState<Position | null>(null);
   const [hoverFeature, setHoverFeature] = useState(false);
 
@@ -76,25 +104,34 @@ export default function MapView() {
   const parcels = project?.property.parcels ?? NO_PARCELS;
   const beneficiaries = project?.beneficiaries ?? NO_BENEFICIARIES;
   const areaUnit = project?.settings.areaUnit ?? "ha";
+  const zones = project?.valueZones ?? NO_ZONES;
+  const assets = project?.assets ?? NO_ASSETS;
+  const frontage = project?.frontageLines ?? NO_FRONTAGE;
+  const currency = project?.settings.currency ?? "TND";
+  const editingValue = panel === "property" && propertyView === "value";
 
   const scenario = useActiveScenario();
   const lots = useDisplayedLots(scenario);
   const inScenario = panel === "scenarios" && scenario !== null;
   const lotActions = useLotActions(scenario?.id ?? null);
+  const tScenarios = useTranslations("scenarios");
   const { result: validation } = useValidation(scenario?.id ?? null);
   const selectedIssueId = useMapUiStore((s) => s.selectedIssueId);
 
   const measuring = isMeasureTool(tool);
   const drawing = isDrawTool(tool);
-  const interactiveLayer =
+  const interactiveLayers =
     tool !== "pan"
-      ? null
+      ? []
       : inScenario
-        ? LOT_FILL_LAYER
-        : panel === "property"
-          ? PROPERTY_FILL_LAYER
-          : null;
+        ? [LOT_FILL_LAYER]
+        : editingValue
+          ? VALUE_LAYERS
+          : panel === "property"
+            ? [PROPERTY_FILL_LAYER]
+            : [];
 
+  const propertyGeometries = useMemo(() => parcels.map((p) => p.geometry), [parcels]);
   const propertyTargets = useMemo(
     () =>
       snapTargetsFrom(
@@ -141,9 +178,29 @@ export default function MapView() {
     [update],
   );
 
+  const addAsset = useCallback(
+    (geometry: Asset["geometry"]) => {
+      const p = useWorkspaceStore.getState().project;
+      if (!p) return;
+      const asset: Asset = {
+        id: newId(),
+        name: nextName(tValue("assets.defaultName"), p.assets),
+        kind: geometry.type === "Point" ? "well" : "trees",
+        geometry,
+        value: 0,
+      };
+      update((d) => void d.assets.push(asset), { immediate: true });
+      setTool("pan");
+      setTimeout(() => selectValueItem({ kind: "asset", id: asset.id }), 0);
+    },
+    [tValue, update, setTool, selectValueItem],
+  );
+
   const onClick = useCallback(
     (e: MapLayerMouseEvent) => {
       if (measuring) return addMeasurePoint([e.lngLat.lng, e.lngLat.lat]);
+      if (tool === "draw-asset-point")
+        return addAsset({ type: "Point", coordinates: [e.lngLat.lng, e.lngLat.lat] });
       if (tool !== "pan") return;
       const hit = (layer: string) => e.features?.find((f) => f.layer.id === layer)?.properties?.id;
       if (inScenario) {
@@ -154,12 +211,38 @@ export default function MapView() {
         else if (!additive) selectLot(null);
         return;
       }
+      if (editingValue) {
+        // Most specific first: point assets, frontage, area assets, zones.
+        const f = VALUE_LAYERS.map((layer) => e.features?.find((x) => x.layer.id === layer)).find(
+          Boolean,
+        );
+        const id = f?.properties?.id;
+        const kind =
+          f?.layer.id === VALUE_ZONE_LAYER
+            ? "zone"
+            : f?.layer.id === FRONTAGE_LAYER
+              ? "frontage"
+              : "asset";
+        selectValueItem(typeof id === "string" ? { kind, id } : null);
+        return;
+      }
       if (panel === "property") {
         const id = hit(PROPERTY_FILL_LAYER);
         selectParcel(typeof id === "string" ? id : null);
       }
     },
-    [measuring, tool, inScenario, panel, addMeasurePoint, selectParcel, selectLot],
+    [
+      measuring,
+      tool,
+      inScenario,
+      panel,
+      editingValue,
+      addMeasurePoint,
+      selectParcel,
+      selectLot,
+      selectValueItem,
+      addAsset,
+    ],
   );
 
   const onMouseMove = useCallback(
@@ -168,6 +251,36 @@ export default function MapView() {
     },
     [measuring, measureFinished],
   );
+
+  function addZone(geometry: Polygon) {
+    const p = useWorkspaceStore.getState().project;
+    if (!p) return;
+    const hasBase = (p.settings.baseValuePerM2 ?? 0) > 0;
+    const zone: ValueZone = {
+      id: newId(),
+      name: nextName(tValue("zones.defaultName"), p.valueZones),
+      color: BENEFICIARY_COLORS[(p.valueZones.length + 2) % BENEFICIARY_COLORS.length],
+      geometry,
+      mode: hasBase ? "multiplier" : "perM2",
+      value: hasBase ? 1.5 : 0,
+    };
+    update((d) => void d.valueZones.push(zone), { immediate: true });
+    setTool("pan");
+    setTimeout(() => selectValueItem({ kind: "zone", id: zone.id }), 0);
+  }
+
+  function addFrontage(geometry: LineString) {
+    const p = useWorkspaceStore.getState().project;
+    if (!p) return;
+    const line: FrontageLine = {
+      id: newId(),
+      name: nextName(tValue("frontage.defaultName"), p.frontageLines),
+      geometry,
+    };
+    update((d) => void d.frontageLines.push(line), { immediate: true });
+    setTool("pan");
+    setTimeout(() => selectValueItem({ kind: "frontage", id: line.id }), 0);
+  }
 
   const onDrawPropertyComplete = useCallback(
     (polygon: Polygon) => {
@@ -222,7 +335,7 @@ export default function MapView() {
         mapLib={maplibregl}
         initialViewState={initialViewState}
         mapStyle={mapStyle}
-        interactiveLayerIds={interactiveLayer ? [interactiveLayer] : []}
+        interactiveLayerIds={interactiveLayers}
         ref={(ref) => {
           // Dev-only handle for debugging from the browser console / automated checks.
           if (process.env.NODE_ENV !== "production" && ref) {
@@ -237,7 +350,13 @@ export default function MapView() {
         onMouseLeave={() => setHoverFeature(false)}
         onMouseOut={() => setHover(null)}
         doubleClickZoom={tool === "pan"}
-        cursor={measuring ? "crosshair" : tool === "pan" && hoverFeature ? "pointer" : undefined}
+        cursor={
+          measuring || tool === "draw-asset-point"
+            ? "crosshair"
+            : tool === "pan" && hoverFeature
+              ? "pointer"
+              : undefined
+        }
         attributionControl={false}
         maxZoom={21}
         style={{ width: "100%", height: "100%" }}
@@ -255,6 +374,17 @@ export default function MapView() {
           interactive={!inScenario && tool === "pan"}
           showLabels={!inScenario}
         />
+        {(editingValue || inScenario) && (
+          <ValueLayers
+            zones={zones}
+            assets={assets}
+            frontage={frontage}
+            selected={editingValue ? selectedValueItem : null}
+            emphasis={editingValue ? "full" : "context"}
+            showLabels={editingValue && zoom >= 13}
+            zoneLabel={(z) => zoneValueLabel(z, currency, locale, tValue)}
+          />
+        )}
         {inScenario && (
           <LotsLayer
             lots={lots}
@@ -277,7 +407,9 @@ export default function MapView() {
             scenarioId={scenario.id}
             lots={scenario.lots}
             propertyTargets={propertyTargets}
+            property={propertyGeometries}
             onCommit={onLotsCommit}
+            onRejected={() => toast.error(tScenarios("toast.errors.outside"))}
           />
         )}
         {measuring && (
@@ -296,6 +428,23 @@ export default function MapView() {
             mode="polygon"
             onComplete={onDrawLotComplete}
             snapTargets={lotAndPropertyTargets}
+          />
+        )}
+        {tool === "draw-zone" && (
+          <DrawController mode="polygon" onComplete={addZone} snapTargets={propertyTargets} />
+        )}
+        {tool === "draw-asset-area" && (
+          <DrawController
+            mode="polygon"
+            onComplete={(g) => addAsset(g)}
+            snapTargets={propertyTargets}
+          />
+        )}
+        {tool === "draw-frontage" && (
+          <DrawController
+            mode="linestring"
+            onComplete={addFrontage}
+            snapTargets={propertyTargets}
           />
         )}
         {tool === "split-lot" && inScenario && (
@@ -322,6 +471,13 @@ export default function MapView() {
       </div>
     </div>
   );
+}
+
+function nextName(prefix: string, existing: { name: string }[]) {
+  const used = new Set(existing.map((x) => x.name));
+  let n = existing.length + 1;
+  while (used.has(`${prefix} ${n}`)) n++;
+  return `${prefix} ${n}`;
 }
 
 /** Saved view if any; otherwise fit the property; otherwise Tunisia. */

@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useMapUiStore } from "@/store/map-ui-store";
 import { useWorkspaceStore } from "@/store/workspace-store";
 import { ImportDialog } from "./import-dialog";
+import { ValuePanel } from "../value/value-panel";
 import { ParcelDetails } from "./parcel-details";
 
 const NO_PARCELS: OriginalParcel[] = [];
@@ -28,6 +29,9 @@ export function PropertyPanel() {
   const tool = useMapUiStore((s) => s.tool);
   const setTool = useMapUiStore((s) => s.setTool);
   const [importOpen, setImportOpen] = useState(false);
+  const view = useMapUiStore((s) => s.propertyView);
+  const setView = useMapUiStore((s) => s.setPropertyView);
+  const tv = useTranslations("value");
 
   const total = totalAreaM2(parcels.map((p) => p.geometry));
   const selected = parcels.find((p) => p.id === selectedId);
@@ -48,8 +52,46 @@ export function PropertyPanel() {
     </div>
   );
 
+  const switcher = parcels.length > 0 && (
+    <div className="border-b p-2">
+      <div
+        role="tablist"
+        aria-label={tv("viewsLabel")}
+        className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1"
+      >
+        {(["parcels", "value"] as const).map((v) => (
+          <button
+            key={v}
+            type="button"
+            role="tab"
+            aria-selected={view === v}
+            onClick={() => setView(v)}
+            className={cn(
+              "rounded-md px-2 py-1.5 text-xs font-medium transition-colors",
+              view === v
+                ? "bg-background shadow-sm"
+                : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {tv(`views.${v}`)}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (switcher && view === "value") {
+    return (
+      <div className="flex flex-col">
+        {switcher}
+        <ValuePanel />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col">
+      {switcher}
       {parcels.length === 0 ? (
         <div className="flex flex-col items-center px-6 py-12 text-center">
           <div className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">

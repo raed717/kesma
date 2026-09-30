@@ -86,7 +86,11 @@
       "scenarios": "Scénarios",
       "settings": "Paramètres"
     },
-    "projectName": "Nom du projet"
+    "projectName": "Nom du projet",
+    "history": {
+      "undo": "Annuler (Ctrl+Z)",
+      "redo": "Rétablir (Ctrl+Y)"
+    }
   },
   "settings": {
     "title": "Paramètres du projet",
@@ -316,6 +320,22 @@
     "split": {
       "title": "Découper des lots",
       "hint": "Tracez une ligne à travers un ou plusieurs lots (accroche aux limites). Entrée ou re-cliquez le dernier point pour découper."
+    },
+    "zone": {
+      "title": "Dessiner une zone de valeur",
+      "hint": "Cliquez chaque sommet (accroche à la limite de la propriété). Entrée ou premier point pour terminer."
+    },
+    "assetPoint": {
+      "title": "Placer un bien",
+      "hint": "Cliquez sur la carte à l'emplacement du bien (puits, maison…)."
+    },
+    "assetArea": {
+      "title": "Dessiner la surface d'un bien",
+      "hint": "Cliquez chaque sommet (verger, serre…). Entrée ou premier point pour terminer."
+    },
+    "frontage": {
+      "title": "Tracer une façade sur route",
+      "hint": "Cliquez le long de la route (accroche à la limite). Entrée ou re-cliquez le dernier point pour terminer."
     }
   },
   "scenarios": {
@@ -361,7 +381,12 @@
       "longitude": "Longitude",
       "sharedVertex": "Partagé avec {count, plural, one {# lot} other {# lots}}",
       "coordinatesHint": "Modifier un sommet partagé (●) le déplace aussi dans les lots voisins.",
-      "owner": "Attribué à"
+      "owner": "Attribué à",
+      "value": "Valeur estimée",
+      "valueWithAssets": "(dont biens {assets})",
+      "frontage": "Façade sur route",
+      "noRoadAccess": "Pas d'accès à la route",
+      "assets": "Biens"
     },
     "toast": {
       "undo": "Annuler",
@@ -375,7 +400,8 @@
         "locked": "Les lots verrouillés ne peuvent pas être modifiés. Déverrouillez-les d'abord.",
         "empty": "Rien à ajouter : la forme est hors de la propriété ou déjà couverte par des lots.",
         "tooFew": "Sélectionnez au moins deux lots (Maj+clic).",
-        "notFound": "Ce lot n'existe plus."
+        "notFound": "Ce lot n'existe plus.",
+        "outside": "Un lot ne peut pas dépasser la propriété."
       },
       "fixed": "Corrigé"
     },
@@ -418,7 +444,16 @@
         "warn": "Proche de la tolérance",
         "off": "Hors tolérance",
         "noTarget": "Pas de surface cible"
-      }
+      },
+      "metricLabel": "Comparer par",
+      "metric": {
+        "area": "Surface",
+        "value": "Valeur"
+      },
+      "roadAccessSummary": "{count} bénéficiaire(s) sur {total} ont un accès à la route",
+      "propertyValue": "Valeur totale estimée : {value}",
+      "roadAccess": "Accès route : {length} de façade",
+      "noRoadAccess": "Pas d'accès à la route"
     },
     "validation": {
       "checking": "Vérification du scénario…",
@@ -463,6 +498,117 @@
         "assign": "Attribuer {name} à",
         "noLots": "Découpez la propriété ou dessinez des lots dans la vue Lots."
       }
+    },
+    "autosplit": "Répartition automatique…",
+    "versionsMenu": "Versions ({count})…"
+  },
+  "value": {
+    "viewsLabel": "Vues de la propriété",
+    "views": {
+      "parcels": "Parcelles",
+      "value": "Valeur & accès"
+    },
+    "propertyValue": "Valeur estimée de la propriété",
+    "noValueYet": "Définissez une valeur de base au m², des zones de valeur ou des biens pour estimer les valeurs.",
+    "baseValue": "Valeur de base au m² ({currency})",
+    "baseValueHint": "S'applique partout sauf dans les zones de valeur.",
+    "disclaimer": "Estimations pour comparer les lots — pas une évaluation officielle.",
+    "name": "Nom",
+    "color": "Couleur",
+    "zones": {
+      "title": "Zones de valeur",
+      "hint": "Zones qui valent plus ou moins (irriguée, constructible, rocailleuse…). Dessinez-les sur la carte.",
+      "add": "Ajouter une zone",
+      "defaultName": "Zone",
+      "perM2Label": "{value} {currency}/m²",
+      "mode": "Mode d'évaluation",
+      "modes": {
+        "perM2": "Valeur fixe au m² ({currency})",
+        "multiplier": "Multiplicateur de la valeur de base"
+      },
+      "needsBase": "Définissez une valeur de base au m² pour que les multiplicateurs aient un effet.",
+      "multiplier": "Multiplicateur (ex. 1,5)",
+      "perM2": "Valeur au m² ({currency})",
+      "up": "Priorité plus haute",
+      "down": "Priorité plus basse",
+      "priority": "Priorité en cas de chevauchement"
+    },
+    "assets": {
+      "title": "Biens",
+      "hint": "Puits, constructions, arbres… avec une valeur fixe. Placez un point ou dessinez une surface.",
+      "addPoint": "Point",
+      "addArea": "Surface",
+      "defaultName": "Bien",
+      "kind": "Type",
+      "kinds": {
+        "well": "Puits",
+        "building": "Construction",
+        "trees": "Arbres / verger",
+        "infrastructure": "Infrastructure",
+        "other": "Autre"
+      },
+      "value": "Valeur ({currency})",
+      "pointRule": "Appartient entièrement au lot qui le contient.",
+      "areaRule": "Partagé entre les lots au prorata de la surface couverte."
+    },
+    "frontage": {
+      "title": "Façade sur route",
+      "hint": "Tracez les routes le long de la propriété pour mesurer l'accès de chaque lot.",
+      "add": "Tracer une route",
+      "defaultName": "Route"
     }
+  },
+  "autosplit": {
+    "title": "Répartition automatique selon les parts",
+    "description": "Découpe la propriété en bandes parallèles, une par bénéficiaire, selon chaque part en surface ou en valeur. Le résultat se modifie comme tout scénario.",
+    "mode": "Équilibrer",
+    "modes": {
+      "area": "La surface",
+      "value": "La valeur estimée"
+    },
+    "valueNeedsModel": "Pour répartir par valeur, définissez une valeur de base, des zones ou des biens (Propriété → Valeur & accès).",
+    "direction": "Direction des lignes de coupe",
+    "presets": {
+      "northSouth": "Nord–sud",
+      "eastWest": "Est–ouest",
+      "longestEdge": "Le long du plus grand côté",
+      "road": "Perpendiculaire à la route"
+    },
+    "angle": "Angle des lignes de coupe",
+    "order": "Ordre des bandes",
+    "orderHint": "La bande 1 est du côté marqué 1 dans l'aperçu.",
+    "moveUp": "Monter {name}",
+    "moveDown": "Descendre {name}",
+    "sharesUnder": "Les parts ne font pas 100 % : elles sont agrandies proportionnellement pour couvrir toute la propriété.",
+    "name": "Nom du scénario",
+    "defaultName": {
+      "area": "Automatique — surfaces égales",
+      "value": "Automatique — valeurs égales"
+    },
+    "cancel": "Annuler",
+    "run": "Créer le scénario",
+    "done": "Scénario créé — plus grand écart {deviation}",
+    "lotPrefix": "Lot",
+    "errors": {
+      "noProperty": "Importez ou dessinez d'abord la propriété.",
+      "noShares": "Ajoutez d'abord des bénéficiaires avec leurs parts (onglet Héritiers).",
+      "shares": "Corrigez d'abord les parts (onglet Héritiers) : elles sont invalides ou dépassent la propriété.",
+      "noParts": "Aucun bénéficiaire n'a de part supérieure à zéro.",
+      "noValueModel": "Définissez d'abord les valeurs (Propriété → Valeur & accès)."
+    }
+  },
+  "versions": {
+    "title": "Versions de « {name} »",
+    "description": "Enregistrez les lots actuels sous un nom pour y revenir plus tard.",
+    "nameLabel": "Nom de la version",
+    "defaultName": "Version {n}",
+    "save": "Enregistrer",
+    "saved": "Version « {name} » enregistrée",
+    "restored": "Version « {name} » restaurée (Ctrl+Z pour annuler)",
+    "empty": "Aucune version enregistrée.",
+    "listLabel": "Versions enregistrées",
+    "lots": "{count, plural, one {# lot} other {# lots}}",
+    "restore": "Restaurer",
+    "delete": "Supprimer {name}"
   }
 }

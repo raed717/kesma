@@ -109,3 +109,91 @@ export function computeAllocation(
     beneficiariesWithTarget: rows.filter((r) => r.targetM2 !== null).length,
   };
 }
+
+// ---------- value allocation ----------
+
+/** Per-lot value data needed here (see domain/value.ts). */
+export type LotValueLike = { total: number; frontageM: number; roadAccess: boolean };
+
+export type ValueRow = {
+  beneficiaryId: string;
+  value: number;
+  targetValue: number | null;
+  diff: number | null;
+  diffRatio: number | null;
+  status: AllocationStatus;
+  frontageM: number;
+  roadAccess: boolean;
+};
+
+export type ValueAllocation = {
+  rows: ValueRow[];
+  unassignedValue: number;
+  maxAbsDeviation: number;
+  beneficiariesWithinTolerance: number;
+  beneficiariesWithRoadAccess: number;
+};
+
+/**
+ * Value received by each beneficiary vs. their share of the total property value.
+ * Uses the same tolerance as areas.
+ */
+export function computeValueAllocation(
+  lots: Lot[],
+  beneficiaries: Beneficiary[],
+  shares: ShareResolution,
+  lotValues: Map<string, LotValueLike>,
+  totalValue: number,
+  tolerancePct: number,
+): ValueAllocation {
+  const known = new Set(beneficiaries.map((b) => b.id));
+  let unassignedValue = 0;
+  const acc = new Map<string, { value: number; frontageM: number; road: boolean }>();
+  for (const lot of lots) {
+    const v = lotValues.get(lot.id);
+    if (!v) continue;
+    if (!lot.beneficiaryId || !known.has(lot.beneficiaryId)) {
+      unassignedValue += v.total;
+      continue;
+    }
+    const a = acc.get(lot.beneficiaryId) ?? { value: 0, frontageM: 0, road: false };
+    a.value += v.total;
+    a.frontageM += v.frontageM;
+    a.road ||= v.roadAccess;
+    acc.set(lot.beneficiaryId, a);
+  }
+  const rows: ValueRow[] = beneficiaries.map((b) => {
+    const a = acc.get(b.id) ?? { value: 0, frontageM: 0, road: false };
+    const part = shares.shares.get(b.id)?.part;
+    const targetValue = part === undefined || !Number.isFinite(part) ? null : part * totalValue;
+    const diff = targetValue === null ? null : a.value - targetValue;
+    const diffRatio =
+      targetValue === null || diff === null
+        ? null
+        : targetValue > 0
+          ? diff / targetValue
+          : a.value > 0
+            ? Infinity
+            : 0;
+    return {
+      beneficiaryId: b.id,
+      value: a.value,
+      targetValue,
+      diff,
+      diffRatio,
+      status: allocationStatus(diffRatio, tolerancePct),
+      frontageM: a.frontageM,
+      roadAccess: a.road,
+    };
+  });
+  const devs = rows
+    .filter((r) => r.diffRatio !== null && Number.isFinite(r.diffRatio))
+    .map((r) => Math.abs(r.diffRatio!));
+  return {
+    rows,
+    unassignedValue,
+    maxAbsDeviation: devs.length ? Math.max(...devs) : 0,
+    beneficiariesWithinTolerance: rows.filter((r) => r.status === "ok").length,
+    beneficiariesWithRoadAccess: rows.filter((r) => r.roadAccess).length,
+  };
+}

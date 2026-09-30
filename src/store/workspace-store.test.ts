@@ -57,6 +57,46 @@ describe("workspace store", () => {
     }
   });
 
+  it("undo / redo restore previous states and are saved", async () => {
+    await store().load("p1");
+    const original = store().project!.name;
+    store().update((d) => void (d.name = "One"));
+    store().update((d) => void (d.name = "Two"));
+    store().undo();
+    expect(store().project!.name).toBe("One");
+    store().undo();
+    expect(store().project!.name).toBe(original);
+    store().undo(); // nothing left: no-op
+    expect(store().project!.name).toBe(original);
+    store().redo();
+    expect(store().project!.name).toBe("One");
+    await settle();
+    expect((await getProjectRepository().get("p1"))?.name).toBe("One");
+    // A new edit clears the redo stack.
+    store().update((d) => void (d.name = "Three"));
+    store().redo();
+    expect(store().project!.name).toBe("Three");
+  });
+
+  it("map-view updates are not undo steps, and undo keeps the current view", async () => {
+    await store().load("p1");
+    store().update((d) => void (d.name = "Named"));
+    store().update(
+      (d) => void (d.mapView = { longitude: 10, latitude: 36, zoom: 12, basemap: "streets" }),
+      { touch: false },
+    );
+    expect(store().past).toHaveLength(1);
+    store().undo();
+    expect(store().project!.name).not.toBe("Named");
+    expect(store().project!.mapView?.basemap).toBe("streets");
+  });
+
+  it("caps the history", async () => {
+    await store().load("p1");
+    for (let i = 0; i < 120; i++) store().update((d) => void (d.name = `n${i}`));
+    expect(store().past.length).toBe(100);
+  });
+
   it("close() still saves pending edits", async () => {
     await store().load("p1");
     store().update((d) => void (d.name = "Renamed"));

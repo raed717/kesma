@@ -8,6 +8,7 @@ import type { Lot } from "@/domain/model/project";
 import type { LotOpResult } from "@/domain/lot-operations";
 import { useMapUiStore } from "@/store/map-ui-store";
 import { useWorkspaceStore } from "@/store/workspace-store";
+import { undoProjectChange } from "../workspace/history-controls";
 import { getScenarioLots, setScenarioLots } from "./scenario-state";
 
 /**
@@ -40,10 +41,9 @@ export function useLotActions(scenarioId: string | null) {
         id: LOT_UNDO_TOAST,
         action: {
           label: t("undo"),
-          onClick: () => {
-            setScenarioLots(scenarioId, before);
-            useMapUiStore.setState({ selectedLotIds: [] });
-          },
+          // The operation is the latest history step (the toast is dismissed on any
+          // other edit), so the toast's undo is simply the project undo.
+          onClick: () => undoProjectChange(),
         },
       });
       return true;

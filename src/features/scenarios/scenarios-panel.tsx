@@ -2,6 +2,7 @@
 
 import {
   Copy,
+  History,
   Layers,
   MoreVertical,
   Pencil,
@@ -9,6 +10,7 @@ import {
   Shapes,
   SquareDashed,
   Trash2,
+  Wand2,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -38,6 +40,8 @@ import { useMapUiStore } from "@/store/map-ui-store";
 import { useWorkspaceStore } from "@/store/workspace-store";
 import { ProjectFormDialog } from "../projects/project-form-dialog";
 import { AllocationView } from "./allocation-view";
+import { AutoSplitDialog } from "./autosplit-dialog";
+import { VersionsDialog } from "./versions-dialog";
 import { LotsView } from "./lots-view";
 import { useActiveScenario, useDisplayedLots } from "./scenario-state";
 import { ScenarioStatusRow } from "./scenario-status";
@@ -46,6 +50,8 @@ import { ValidationView } from "./validation-view";
 
 type Dialog =
   | { kind: "none" }
+  | { kind: "autosplit" }
+  | { kind: "versions"; scenario: Scenario }
   | { kind: "new"; fromProperty: boolean }
   | { kind: "rename" | "duplicate" | "delete"; scenario: Scenario };
 
@@ -90,6 +96,14 @@ export function ScenariosPanel() {
 
   const dialogs = (
     <>
+      <AutoSplitDialog open={dialog.kind === "autosplit"} onOpenChange={(o) => !o && close()} />
+      {dialog.kind === "versions" && (
+        <VersionsDialog
+          scenario={scenarios.find((x) => x.id === dialog.scenario.id) ?? dialog.scenario}
+          open
+          onOpenChange={(o) => !o && close()}
+        />
+      )}
       <ProjectFormDialog
         open={dialog.kind === "new"}
         onOpenChange={(o) => !o && close()}
@@ -180,6 +194,9 @@ export function ScenariosPanel() {
             >
               <SquareDashed /> {t("newEmpty")}
             </Button>
+            <Button size="sm" variant="outline" onClick={() => setDialog({ kind: "autosplit" })}>
+              <Wand2 /> {t("autosplit")}
+            </Button>
           </div>
         </Empty>
         {dialogs}
@@ -227,6 +244,13 @@ export function ScenariosPanel() {
               <DropdownMenuItem onClick={() => setDialog({ kind: "new", fromProperty: false })}>
                 <Plus /> {t("newEmpty")}
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setDialog({ kind: "autosplit" })}>
+                <Wand2 /> {t("autosplit")}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setDialog({ kind: "versions", scenario })}>
+                <History /> {t("versionsMenu", { count: scenario.versions.length })}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setDialog({ kind: "duplicate", scenario })}>
                 <Copy /> {tc("duplicate")}
               </DropdownMenuItem>

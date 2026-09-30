@@ -40,7 +40,7 @@ export function lotsFromParcels(
 }
 
 export function createScenario(
-  input: { name: string; lots?: Lot[] },
+  input: { name: string; lots?: Lot[]; method?: Scenario["method"] },
   deps: FactoryDeps = {},
 ): Scenario {
   const now = (deps.now ?? (() => new Date()))().toISOString();
@@ -48,10 +48,11 @@ export function createScenario(
     id: newId(deps),
     name: input.name.trim(),
     status: "draft",
-    method: "manual",
+    method: input.method ?? "manual",
     createdAt: now,
     updatedAt: now,
     lots: input.lots ?? [],
+    versions: [],
   };
 }
 
@@ -70,5 +71,6 @@ export function duplicateScenario(
     createdAt: now,
     updatedAt: now,
     lots: source.lots.map((l) => ({ ...structuredClone(l), id: newId(deps) })),
+    versions: [],
   };
 }

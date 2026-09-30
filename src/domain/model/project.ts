@@ -106,8 +106,20 @@ export const ScenarioSchema = z.object({
   updatedAt: IsoDateSchema,
   lots: z.array(LotSchema),
   notes: z.string().optional(),
+  /** Named saved versions of this scenario's lots (restorable). Defaults to [] for older files. */
+  versions: z
+    .array(
+      z.object({
+        id: IdSchema,
+        name: z.string().min(1),
+        createdAt: IsoDateSchema,
+        lots: z.array(LotSchema),
+      }),
+    )
+    .default([]),
 });
 export type Scenario = z.infer<typeof ScenarioSchema>;
+export type ScenarioVersion = Scenario["versions"][number];
 
 export const ValueZoneSchema = z.object({
   id: IdSchema,

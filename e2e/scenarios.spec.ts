@@ -144,7 +144,7 @@ test("scenario from property → cut → drag shared corner → merge", async ({
   await expect(coverage(page)).toHaveText("2 lots · 10.8992 ha of 10.8992 ha (100%)");
 
   // Undo from the toast restores the 3 lots.
-  await page.getByRole("button", { name: "Undo" }).click();
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
   await expect(rows).toHaveCount(3);
 
   // Persisted after reload.
@@ -191,4 +191,45 @@ test("draw a lot in an empty scenario: clipped to the property", async ({ page }
   // Only the part inside the property remains (the two parcels touch → one lot).
   await expect(coverage(page)).toHaveText(/^1 lot · 10\.89\d\d ha of 10\.8992 ha \(100%\)$/);
   await shot(page, "s4-06-drawn");
+});
+
+test("dragging a corner outside the property keeps the lot inside it", async ({ page }) => {
+  await setup(page);
+  await page.getByRole("button", { name: "New scenario from the property" }).click();
+  await page.getByRole("button", { name: "Create" }).click();
+  const rows = page.getByRole("list", { name: "Lots" }).locator("> li > button");
+  await expect(rows).toHaveCount(2);
+
+  // Select the farmland (largest lot) and take its left-most corner (clear of toasts).
+  const areas = (await page.getByTestId("lot-area").allTextContents()).map((s) => parseFloat(s));
+  await rows.nth(areas.indexOf(Math.max(...areas))).click();
+  await page.waitForTimeout(1200);
+  const corner = await page.evaluate(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const map = (window as any).__kesmaMap;
+    const v = await map.getSource("lot-vertices").getData();
+    const pts: [number, number][] = v.features.map(
+      (f: { geometry: { coordinates: [number, number] } }) => f.geometry.coordinates,
+    );
+    return pts.sort((a, b) => a[0] - b[0])[0];
+  });
+  const from = await toScreen(page, corner);
+  const before = (await coverage(page).textContent()) ?? "";
+  // Drag 150 px left and down, out of the property: the corner should slide along the edge.
+  await page.mouse.move(from.x, from.y);
+  await page.mouse.down();
+  await page.mouse.move(from.x - 150, from.y + 150, { steps: 10 });
+  await page.mouse.up();
+  await page.waitForTimeout(300);
+  // The drag really happened (the lot changed)…
+  expect(await coverage(page).textContent()).not.toBe(before);
+  // Lots never exceed the property: coverage ≤ 100 % and no "outside" validation issue.
+  const text = (await coverage(page).textContent()) ?? "";
+  const percent = parseFloat(text.match(/\(([\d.]+)%\)/)![1]);
+  expect(percent).toBeLessThanOrEqual(100);
+  await page.getByRole("tab", { name: /^Validation/ }).click();
+  await expect(page.getByTestId("validation-issue").first()).toBeVisible();
+  await expect(
+    page.locator('[data-testid="validation-issue"][data-kind="outsideProperty"]'),
+  ).toHaveCount(0);
 });

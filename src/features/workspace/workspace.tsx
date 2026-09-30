@@ -19,6 +19,7 @@ import { useWorkspaceStore } from "@/store/workspace-store";
 import { exportProjectFile } from "../projects/export-project";
 import { ValidationRunner } from "../scenarios/validation-runner";
 import { ProjectNameEditor } from "./project-name-editor";
+import { HistoryControls } from "./history-controls";
 import { SaveIndicator } from "./save-indicator";
 import { SidePanel } from "./side-panel";
 
@@ -94,6 +95,7 @@ export function Workspace({ projectId }: { projectId: string }) {
           <span className="hidden text-muted-foreground sm:inline">/</span>
           <ProjectNameEditor />
           <SaveIndicator />
+          <HistoryControls />
           <div className="ms-auto flex items-center gap-1">
             <ExportButton />
             <LocaleSwitcher />

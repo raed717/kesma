@@ -164,3 +164,26 @@ export function repairPolygon(polygon: Polygon): Polygon[] {
     .filter((f) => f.getArea() > MIN_AREA_DEG2)
     .map((f) => write(f) as Polygon);
 }
+
+// ---------- value model helpers ----------
+
+/** Polygons around lines, `distanceDeg` wide on each side (planar degrees). */
+export function bufferLines(lines: LineString[], distanceDeg: number): Polygon[] {
+  if (lines.length === 0) return [];
+  // Flat end caps (style 2): the buffer does not extend past the ends of the line.
+  return polygonsOf(unionAll(lines.map((l) => read(l).buffer(distanceDeg, 8, 2) as G)));
+}
+
+/** Part of a polygon's boundary lying inside the given areas (GeoJSON lines), or null. */
+export function boundaryWithin(polygon: Polygon, areas: Polygon[]): GeoJSON.Geometry | null {
+  if (areas.length === 0) return null;
+  const part = read(polygon)
+    .getBoundary()
+    .intersection(unionAll(areas.map(read))) as G;
+  return part.isEmpty() ? null : write(part);
+}
+/** A point guaranteed to lie strictly inside the polygon (unlike a centroid or a vertex). */
+export function interiorPoint(polygon: Polygon): Position {
+  const c = read(polygon).getInteriorPoint().getCoordinate();
+  return [c.x, c.y];
+}

@@ -9,6 +9,10 @@ const KEYS = {
   "draw-property": "property",
   "draw-lot": "lot",
   "split-lot": "split",
+  "draw-zone": "zone",
+  "draw-asset-point": "assetPoint",
+  "draw-asset-area": "assetArea",
+  "draw-frontage": "frontage",
 } as const;
 
 export function DrawPanel({ tool }: { tool: MapTool }) {

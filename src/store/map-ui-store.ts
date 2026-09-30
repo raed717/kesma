@@ -5,7 +5,19 @@ import type { Position } from "@/domain/model/geojson";
 import type { Lot } from "@/domain/model/project";
 
 export type MapTool =
-  "pan" | "measure-distance" | "measure-area" | "draw-property" | "draw-lot" | "split-lot";
+  | "pan"
+  | "measure-distance"
+  | "measure-area"
+  | "draw-property"
+  | "draw-lot"
+  | "split-lot"
+  | "draw-zone"
+  | "draw-asset-point"
+  | "draw-asset-area"
+  | "draw-frontage";
+
+export type PropertyView = "parcels" | "value";
+export type ValueItemRef = { kind: "zone" | "asset" | "frontage"; id: string };
 
 export type WorkspacePanel = "property" | "beneficiaries" | "scenarios" | "settings";
 export type ScenarioView = "lots" | "allocation" | "validation";
@@ -13,8 +25,7 @@ export type ScenarioView = "lots" | "allocation" | "validation";
 export const isMeasureTool = (tool: MapTool) =>
   tool === "measure-distance" || tool === "measure-area";
 
-export const isDrawTool = (tool: MapTool) =>
-  tool === "draw-property" || tool === "draw-lot" || tool === "split-lot";
+export const isDrawTool = (tool: MapTool) => tool.startsWith("draw-") || tool === "split-lot";
 
 type MapUiState = {
   tool: MapTool;
@@ -29,6 +40,8 @@ type MapUiState = {
   lotDraft: { scenarioId: string; lots: Lot[] } | null;
   scenarioView: ScenarioView;
   selectedIssueId: string | null;
+  propertyView: PropertyView;
+  selectedValueItem: ValueItemRef | null;
   setTool: (tool: MapTool) => void;
   setPanel: (panel: WorkspacePanel) => void;
   addMeasurePoint: (point: Position) => void;
@@ -42,6 +55,8 @@ type MapUiState = {
   setLotDraft: (draft: MapUiState["lotDraft"]) => void;
   setScenarioView: (view: ScenarioView) => void;
   selectIssue: (id: string | null) => void;
+  setPropertyView: (view: PropertyView) => void;
+  selectValueItem: (item: ValueItemRef | null) => void;
   reset: () => void;
 };
 
@@ -56,6 +71,8 @@ const initial = {
   lotDraft: null,
   scenarioView: "lots" as ScenarioView,
   selectedIssueId: null,
+  propertyView: "parcels" as PropertyView,
+  selectedValueItem: null,
 };
 
 export const useMapUiStore = create<MapUiState>()((set) => ({
@@ -90,5 +107,7 @@ export const useMapUiStore = create<MapUiState>()((set) => ({
   setLotDraft: (lotDraft) => set({ lotDraft }),
   setScenarioView: (scenarioView) => set({ scenarioView, selectedIssueId: null }),
   selectIssue: (selectedIssueId) => set({ selectedIssueId }),
+  setPropertyView: (propertyView) => set({ propertyView, tool: "pan", selectedValueItem: null }),
+  selectValueItem: (selectedValueItem) => set({ selectedValueItem }),
   reset: () => set(initial),
 }));

@@ -120,15 +120,13 @@ function replaceLot(lots: Lot[], lotId: string, pieces: Polygon[], lotPrefix: st
   if (lot.locked) return { ok: false, reason: "locked" };
   if (pieces.length === 0) return { ok: false, reason: "empty" };
   const sorted = [...pieces].sort((a, b) => geometryAreaM2(b) - geometryAreaM2(a));
-  const extra = sorted
-    .slice(1)
-    .map((geometry, i) =>
-      createLot({
-        label: nextLotLabel(lots, lotPrefix, i),
-        geometry,
-        beneficiaryId: lot.beneficiaryId,
-      }),
-    );
+  const extra = sorted.slice(1).map((geometry, i) =>
+    createLot({
+      label: nextLotLabel(lots, lotPrefix, i),
+      geometry,
+      beneficiaryId: lot.beneficiaryId,
+    }),
+  );
   const next = [...lots.map((l) => (l.id === lotId ? { ...l, geometry: sorted[0] } : l)), ...extra];
   return {
     ok: true,
@@ -208,4 +206,42 @@ export function repairLot(lots: Lot[], lotId: string, lotPrefix: string): LotOpR
   const lot = lots.find((l) => l.id === lotId);
   if (!lot) return { ok: false, reason: "notFound" };
   return replaceLot(lots, lotId, repairPolygon(lot.geometry), lotPrefix);
+}
+
+// ---------- keeping lots inside the property ----------
+
+/** Area of a lot lying outside the property, in m². */
+export function outsideAreaM2(geometry: Polygon, property: AreaGeometry[]): number {
+  if (property.length === 0) return 0;
+  return differencePolygons([geometry], property).reduce((s, p) => s + geometryAreaM2(p), 0);
+}
+
+/** Growth below this (m²) is float noise from points clamped onto the boundary. */
+const EXIT_TOLERANCE_M2 = 0.01;
+
+/**
+ * True if an edit makes any changed lot extend further outside the property than before.
+ * Only lots whose geometry object changed are checked (edits keep untouched lots by
+ * reference). Comparing with the "before" state lets a lot that is already partly outside
+ * be moved back in. `cache` memoises the "before" areas during a drag.
+ */
+export function exitsProperty(
+  before: Lot[],
+  after: Lot[],
+  property: AreaGeometry[],
+  cache?: Map<string, number>,
+): boolean {
+  if (property.length === 0) return false;
+  const previous = new Map(before.map((l) => [l.id, l]));
+  for (const lot of after) {
+    const old = previous.get(lot.id);
+    if (old && old.geometry === lot.geometry) continue;
+    let baseline = 0;
+    if (old) {
+      baseline = cache?.get(lot.id) ?? outsideAreaM2(old.geometry, property);
+      cache?.set(lot.id, baseline);
+    }
+    if (outsideAreaM2(lot.geometry, property) > baseline + EXIT_TOLERANCE_M2) return true;
+  }
+  return false;
 }
