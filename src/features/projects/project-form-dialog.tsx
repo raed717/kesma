@@ -23,6 +23,7 @@ type FormProps = {
   submitLabel: string;
   initialValues?: ProjectFormValues;
   withDescription?: boolean;
+  placeholder?: string;
   onSubmit: (values: ProjectFormValues) => Promise<void> | void;
 };
 
@@ -48,6 +49,7 @@ function ProjectForm({
   submitLabel,
   initialValues,
   withDescription = false,
+  placeholder,
   onSubmit,
   onDone,
 }: FormProps & { onDone: () => void }) {
@@ -86,7 +88,7 @@ function ProjectForm({
           value={name}
           maxLength={120}
           autoFocus
-          placeholder={t("projectForm.namePlaceholder")}
+          placeholder={placeholder ?? t("projectForm.namePlaceholder")}
           aria-invalid={!!error}
           onChange={(e) => {
             setName(e.target.value);

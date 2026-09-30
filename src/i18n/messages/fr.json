@@ -86,10 +86,6 @@
       "scenarios": "Scénarios",
       "settings": "Paramètres"
     },
-    "scenarios": {
-      "empty": "Aucun scénario",
-      "emptyBody": "Créez des scénarios de division, dessinez des lots et comparez les attributions."
-    },
     "projectName": "Nom du projet"
   },
   "settings": {
@@ -147,11 +143,6 @@
     "parcelCount": "{count, plural, one {# parcelle} other {# parcelles}}",
     "parcelList": "Parcelles d'origine",
     "defaultLabel": "Parcelle",
-    "draw": {
-      "title": "Dessiner la propriété",
-      "hint": "Cliquez pour placer chaque sommet. Cliquez sur le premier point ou appuyez sur Entrée pour terminer.",
-      "cancel": "Annuler"
-    },
     "details": {
       "area": "Surface",
       "areaM2": "En m²",
@@ -310,6 +301,168 @@
       "notes": "Notes",
       "deleteTitle": "Retirer ce bénéficiaire ?",
       "deleteBody": "« {name} » sera retiré du projet."
+    }
+  },
+  "drawPanel": {
+    "cancel": "Annuler",
+    "property": {
+      "title": "Dessiner la propriété",
+      "hint": "Cliquez pour placer chaque sommet. Cliquez sur le premier point ou appuyez sur Entrée pour terminer."
+    },
+    "lot": {
+      "title": "Dessiner un lot",
+      "hint": "Cliquez chaque sommet (accroche aux limites). Le lot est gardé dans la propriété et hors des lots existants. Entrée ou premier point pour terminer."
+    },
+    "split": {
+      "title": "Découper des lots",
+      "hint": "Tracez une ligne à travers un ou plusieurs lots (accroche aux limites). Entrée ou re-cliquez le dernier point pour découper."
+    }
+  },
+  "scenarios": {
+    "lotPrefix": "Lot",
+    "defaultName": "Scénario {n}",
+    "namePlaceholder": "ex. Surface égale, Accès à la route…",
+    "needPropertyTitle": "Importez d'abord la propriété",
+    "needPropertyBody": "Les scénarios divisent la propriété en lots. Importez ou dessinez la propriété dans l'onglet Propriété.",
+    "emptyTitle": "Aucun scénario",
+    "emptyBody": "Un scénario est une proposition de division. Partez de toute la propriété et découpez-la en lots, ou dessinez les lots vous-même.",
+    "newFromProperty": "Nouveau scénario depuis la propriété",
+    "newEmpty": "Nouveau scénario vide",
+    "newTitle": "Nouveau scénario",
+    "renameTitle": "Renommer le scénario",
+    "duplicateTitle": "Dupliquer le scénario",
+    "copyOf": "{name} (copie)",
+    "deleteTitle": "Supprimer ce scénario ?",
+    "deleteBody": "« {name} » et tous ses lots seront supprimés. La propriété et les autres scénarios ne sont pas touchés.",
+    "scenario": "Scénario",
+    "actions": "Actions du scénario",
+    "tools": {
+      "split": "Découper",
+      "draw": "Dessiner un lot",
+      "merge": "Fusionner",
+      "delete": "Supprimer"
+    },
+    "coverage": "{count, plural, =0 {Aucun lot} one {# lot} other {# lots}} · {lotsArea} sur {propertyArea} ({percent})",
+    "editHint": "Cliquez un lot pour le sélectionner (Maj+clic pour plusieurs). Glissez les sommets pour ajuster ; un sommet partagé déplace les deux lots. Glissez un point jaune pour ajouter un sommet, clic droit pour en supprimer un.",
+    "noLots": "Aucun lot : découpez la propriété ou dessinez un lot.",
+    "lotList": "Lots",
+    "lot": {
+      "area": "Surface",
+      "areaM2": "En m²",
+      "perimeter": "Périmètre",
+      "vertices": "Sommets",
+      "label": "Nom du lot",
+      "lock": "Verrouiller ce lot",
+      "unlock": "Déverrouiller",
+      "locked": "Verrouillé",
+      "lockedHint": "Un lot verrouillé ne peut être ni déplacé, ni découpé, ni fusionné, ni supprimé.",
+      "coordinates": "Coordonnées des sommets (WGS 84)",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "sharedVertex": "Partagé avec {count, plural, one {# lot} other {# lots}}",
+      "coordinatesHint": "Modifier un sommet partagé (●) le déplace aussi dans les lots voisins.",
+      "owner": "Attribué à"
+    },
+    "toast": {
+      "undo": "Annuler",
+      "split": "Découpe effectuée : {count, plural, one {# lot concerné} other {# lots concernés}}",
+      "added": "{count, plural, one {Lot ajouté} other {# lots ajoutés}}",
+      "merged": "{count} lots fusionnés",
+      "deleted": "{count, plural, one {Lot supprimé} other {# lots supprimés}}",
+      "errors": {
+        "noCut": "La ligne doit traverser entièrement un lot (d'un bord à l'autre).",
+        "notAdjacent": "Seuls des lots qui partagent un côté peuvent être fusionnés.",
+        "locked": "Les lots verrouillés ne peuvent pas être modifiés. Déverrouillez-les d'abord.",
+        "empty": "Rien à ajouter : la forme est hors de la propriété ou déjà couverte par des lots.",
+        "tooFew": "Sélectionnez au moins deux lots (Maj+clic).",
+        "notFound": "Ce lot n'existe plus."
+      },
+      "fixed": "Corrigé"
+    },
+    "views": {
+      "label": "Vues du scénario",
+      "lots": "Lots",
+      "allocation": "Attribution",
+      "validation": "Validation"
+    },
+    "status": {
+      "workflowLabel": "Statut du scénario",
+      "validity": {
+        "valid": "Valide",
+        "incomplete": "Incomplet",
+        "invalid": "Invalide"
+      },
+      "workflow": {
+        "draft": "Brouillon",
+        "proposed": "Proposé",
+        "agreed": "Accepté"
+      }
+    },
+    "assign": {
+      "label": "{count, plural, one {Attribuer le lot sélectionné à} other {Attribuer les # lots sélectionnés à}}",
+      "none": "Non attribué",
+      "select": "Bénéficiaire",
+      "mixed": "Plusieurs bénéficiaires"
+    },
+    "allocation": {
+      "noBeneficiaries": "Ajoutez les bénéficiaires et leurs parts pour comparer les attributions aux cibles.",
+      "goToHeirs": "Aller aux héritiers",
+      "summary": "{ok} bénéficiaire(s) sur {total} dans la tolérance (±{tolerance} %)",
+      "maxDeviation": "Plus grand écart : {value}",
+      "sharesIncomplete": "Les parts ne couvrent pas toute la propriété : les cibles ne sont pas définitives.",
+      "listLabel": "Attribution par bénéficiaire",
+      "lots": "{count, plural, =0 {aucun lot} one {# lot} other {# lots}}",
+      "unassigned": "Pas encore attribué : {area} ({count, plural, one {# lot} other {# lots}}). Cliquez pour sélectionner.",
+      "status": {
+        "ok": "Dans la tolérance",
+        "warn": "Proche de la tolérance",
+        "off": "Hors tolérance",
+        "noTarget": "Pas de surface cible"
+      }
+    },
+    "validation": {
+      "checking": "Vérification du scénario…",
+      "allGood": "Aucun problème : les lots couvrent exactement la propriété et sont tous attribués.",
+      "intro": {
+        "incomplete": "Le scénario est incomplet : comblez les vides et attribuez chaque lot.",
+        "invalid": "Le scénario comporte des erreurs à corriger avant de pouvoir être utilisé."
+      },
+      "errors": "{count, plural, one {# erreur} other {# erreurs}}",
+      "warnings": "{count, plural, one {# avertissement} other {# avertissements}}",
+      "sliver": "résidu",
+      "show": "Voir sur la carte",
+      "kinds": {
+        "invalidGeometry": "Forme de lot invalide",
+        "overlap": "Des lots se chevauchent",
+        "duplicate": "Lots en double",
+        "outsideProperty": "Lot hors de la propriété",
+        "gap": "Surface non couverte par un lot",
+        "unassigned": "Lot non attribué",
+        "noLots": "Aucun lot dans ce scénario"
+      },
+      "details": {
+        "generic": "Géométrie invalide",
+        "repeatedPoint": "Point répété",
+        "holeOutsideShell": "Trou hors de la limite",
+        "nestedHoles": "Trous imbriqués",
+        "disconnectedInterior": "Intérieur déconnecté",
+        "selfIntersection": "La limite se croise elle-même",
+        "ringSelfIntersection": "Le contour se touche lui-même",
+        "nestedShells": "Limites imbriquées",
+        "duplicateRings": "Contours en double",
+        "tooFewPoints": "Trop peu de sommets",
+        "invalidCoordinate": "Coordonnée invalide",
+        "ringNotClosed": "Limite non fermée"
+      },
+      "fix": {
+        "absorbGap": "Rattacher au lot voisin",
+        "keepIn": "Garder dans {name}",
+        "removeDuplicate": "Supprimer {name}",
+        "clip": "Découper à la limite",
+        "repair": "Réparer la forme",
+        "assign": "Attribuer {name} à",
+        "noLots": "Découpez la propriété ou dessinez des lots dans la vue Lots."
+      }
     }
   }
 }

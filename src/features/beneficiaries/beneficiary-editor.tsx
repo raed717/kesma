@@ -180,6 +180,11 @@ export function BeneficiaryEditor({
                 update(
                   (draft) => {
                     draft.beneficiaries = draft.beneficiaries.filter((x) => x.id !== b.id);
+                    // Their lots become unassigned in every scenario (no dangling ids).
+                    for (const s of draft.scenarios) {
+                      for (const lot of s.lots)
+                        if (lot.beneficiaryId === b.id) lot.beneficiaryId = null;
+                    }
                   },
                   { immediate: true },
                 );

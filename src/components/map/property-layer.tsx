@@ -17,9 +17,17 @@ type Props = {
   areaUnit: AreaUnit;
   zoom: number;
   interactive: boolean;
+  showLabels?: boolean;
 };
 
-export function PropertyLayer({ parcels, selectedId, areaUnit, zoom, interactive }: Props) {
+export function PropertyLayer({
+  parcels,
+  selectedId,
+  areaUnit,
+  zoom,
+  interactive,
+  showLabels = true,
+}: Props) {
   const locale = useLocale();
 
   const data = useMemo<GeoJSON.FeatureCollection>(
@@ -71,7 +79,8 @@ export function PropertyLayer({ parcels, selectedId, areaUnit, zoom, interactive
           }}
         />
       </Source>
-      {zoom >= LABEL_MIN_ZOOM &&
+      {showLabels &&
+        zoom >= LABEL_MIN_ZOOM &&
         labels.map((l) => (
           <Marker
             key={l.id}

@@ -86,10 +86,6 @@
       "scenarios": "Scenarios",
       "settings": "Settings"
     },
-    "scenarios": {
-      "empty": "No scenarios yet",
-      "emptyBody": "Create division scenarios, draw lots and compare allocations."
-    },
     "projectName": "Project name"
   },
   "settings": {
@@ -147,11 +143,6 @@
     "parcelCount": "{count, plural, one {# parcel} other {# parcels}}",
     "parcelList": "Original parcels",
     "defaultLabel": "Parcel",
-    "draw": {
-      "title": "Draw the property",
-      "hint": "Click to place each corner. Click the first point or press Enter to finish.",
-      "cancel": "Cancel"
-    },
     "details": {
       "area": "Area",
       "areaM2": "In m²",
@@ -310,6 +301,168 @@
       "notes": "Notes",
       "deleteTitle": "Remove this beneficiary?",
       "deleteBody": "“{name}” will be removed from the project."
+    }
+  },
+  "drawPanel": {
+    "cancel": "Cancel",
+    "property": {
+      "title": "Draw the property",
+      "hint": "Click to place each corner. Click the first point or press Enter to finish."
+    },
+    "lot": {
+      "title": "Draw a lot",
+      "hint": "Click each corner (snaps to boundaries). The lot is kept inside the property and outside existing lots. Enter or first point to finish."
+    },
+    "split": {
+      "title": "Cut lots",
+      "hint": "Draw a line across one or more lots (snaps to boundaries). Press Enter or click the last point again to cut."
+    }
+  },
+  "scenarios": {
+    "lotPrefix": "Lot",
+    "defaultName": "Scenario {n}",
+    "namePlaceholder": "e.g. Equal surface, Road access…",
+    "needPropertyTitle": "Import the property first",
+    "needPropertyBody": "Scenarios divide the property into lots. Import or draw the property in the Property tab.",
+    "emptyTitle": "No scenarios yet",
+    "emptyBody": "A scenario is one proposed division of the property. Start from the whole property and cut it into lots, or draw lots yourself.",
+    "newFromProperty": "New scenario from the property",
+    "newEmpty": "New empty scenario",
+    "newTitle": "New scenario",
+    "renameTitle": "Rename scenario",
+    "duplicateTitle": "Duplicate scenario",
+    "copyOf": "{name} (copy)",
+    "deleteTitle": "Delete this scenario?",
+    "deleteBody": "“{name}” and all its lots will be deleted. The property and other scenarios are not affected.",
+    "scenario": "Scenario",
+    "actions": "Scenario actions",
+    "tools": {
+      "split": "Cut",
+      "draw": "Draw a lot",
+      "merge": "Merge",
+      "delete": "Delete"
+    },
+    "coverage": "{count, plural, =0 {No lots} one {# lot} other {# lots}} · {lotsArea} of {propertyArea} ({percent})",
+    "editHint": "Click a lot to select it (Shift+click for several). Drag corners to adjust; shared corners move both lots. Drag a yellow midpoint to add a corner, right-click a corner to remove it.",
+    "noLots": "No lots yet: cut the property or draw a lot.",
+    "lotList": "Lots",
+    "lot": {
+      "area": "Area",
+      "areaM2": "In m²",
+      "perimeter": "Perimeter",
+      "vertices": "Corners",
+      "label": "Lot name",
+      "lock": "Lock this lot",
+      "unlock": "Unlock",
+      "locked": "Locked",
+      "lockedHint": "A locked lot cannot be moved, cut, merged or deleted.",
+      "coordinates": "Corner coordinates (WGS 84)",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "sharedVertex": "Shared with {count, plural, one {# lot} other {# lots}}",
+      "coordinatesHint": "Editing a shared corner (●) also moves it in the neighbouring lots.",
+      "owner": "Assigned to"
+    },
+    "toast": {
+      "undo": "Undo",
+      "split": "Cut done: {count, plural, one {# lot} other {# lots}} affected",
+      "added": "{count, plural, one {Lot added} other {# lots added}}",
+      "merged": "{count} lots merged",
+      "deleted": "{count, plural, one {Lot deleted} other {# lots deleted}}",
+      "errors": {
+        "noCut": "The line must cross a lot completely (from one edge to another).",
+        "notAdjacent": "Only lots that share an edge can be merged.",
+        "locked": "Locked lots cannot be changed. Unlock them first.",
+        "empty": "Nothing to add: the drawn shape is outside the property or already covered by lots.",
+        "tooFew": "Select at least two lots (Shift+click).",
+        "notFound": "This lot no longer exists."
+      },
+      "fixed": "Fixed"
+    },
+    "views": {
+      "label": "Scenario views",
+      "lots": "Lots",
+      "allocation": "Allocation",
+      "validation": "Validation"
+    },
+    "status": {
+      "workflowLabel": "Scenario status",
+      "validity": {
+        "valid": "Valid",
+        "incomplete": "Incomplete",
+        "invalid": "Invalid"
+      },
+      "workflow": {
+        "draft": "Draft",
+        "proposed": "Proposed",
+        "agreed": "Agreed"
+      }
+    },
+    "assign": {
+      "label": "{count, plural, one {Assign the selected lot to} other {Assign the # selected lots to}}",
+      "none": "Not assigned",
+      "select": "Beneficiary",
+      "mixed": "Several beneficiaries"
+    },
+    "allocation": {
+      "noBeneficiaries": "Add beneficiaries and their shares to compare allocations with targets.",
+      "goToHeirs": "Go to Heirs",
+      "summary": "{ok} of {total} beneficiaries within tolerance (±{tolerance}%)",
+      "maxDeviation": "Largest deviation: {value}",
+      "sharesIncomplete": "Shares do not cover the whole property, so targets are not final.",
+      "listLabel": "Allocation per beneficiary",
+      "lots": "{count, plural, =0 {no lot} one {# lot} other {# lots}}",
+      "unassigned": "Not assigned yet: {area} ({count, plural, one {# lot} other {# lots}}). Click to select.",
+      "status": {
+        "ok": "Within tolerance",
+        "warn": "Close to the tolerance",
+        "off": "Outside tolerance",
+        "noTarget": "No target area"
+      }
+    },
+    "validation": {
+      "checking": "Checking the scenario…",
+      "allGood": "No problems: the lots cover the property exactly and are all assigned.",
+      "intro": {
+        "incomplete": "The scenario is incomplete: fill the gaps and assign every lot.",
+        "invalid": "The scenario has errors to fix before it can be used."
+      },
+      "errors": "{count, plural, one {# error} other {# errors}}",
+      "warnings": "{count, plural, one {# warning} other {# warnings}}",
+      "sliver": "sliver",
+      "show": "Show on map",
+      "kinds": {
+        "invalidGeometry": "Invalid lot shape",
+        "overlap": "Lots overlap",
+        "duplicate": "Duplicate lots",
+        "outsideProperty": "Lot extends outside the property",
+        "gap": "Area not covered by any lot",
+        "unassigned": "Lot not assigned",
+        "noLots": "No lots in this scenario"
+      },
+      "details": {
+        "generic": "Invalid geometry",
+        "repeatedPoint": "Repeated point",
+        "holeOutsideShell": "Hole outside the boundary",
+        "nestedHoles": "Nested holes",
+        "disconnectedInterior": "Interior is disconnected",
+        "selfIntersection": "Boundary crosses itself",
+        "ringSelfIntersection": "Ring touches itself",
+        "nestedShells": "Nested boundaries",
+        "duplicateRings": "Duplicate rings",
+        "tooFewPoints": "Too few corners",
+        "invalidCoordinate": "Invalid coordinate",
+        "ringNotClosed": "Boundary not closed"
+      },
+      "fix": {
+        "absorbGap": "Attach to neighbouring lot",
+        "keepIn": "Keep in {name}",
+        "removeDuplicate": "Delete {name}",
+        "clip": "Cut at the property boundary",
+        "repair": "Repair the shape",
+        "assign": "Assign {name} to",
+        "noLots": "Cut the property or draw lots in the Lots view."
+      }
     }
   }
 }

@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useMapUiStore } from "@/store/map-ui-store";
 import { useWorkspaceStore } from "@/store/workspace-store";
 import { exportProjectFile } from "../projects/export-project";
+import { ValidationRunner } from "../scenarios/validation-runner";
 import { ProjectNameEditor } from "./project-name-editor";
 import { SaveIndicator } from "./save-indicator";
 import { SidePanel } from "./side-panel";
@@ -36,8 +37,7 @@ export function Workspace({ projectId }: { projectId: string }) {
   useEffect(() => {
     const store = useWorkspaceStore.getState();
     void store.load(projectId);
-    useMapUiStore.getState().setTool("pan");
-    useMapUiStore.getState().selectParcel(null);
+    useMapUiStore.getState().reset();
     const flush = () => void useWorkspaceStore.getState().flush();
     // Saving when the tab becomes hidden is the reliable moment: the page is still alive,
     // unlike during pagehide/unload where an IndexedDB write may not complete.
@@ -133,6 +133,7 @@ export function Workspace({ projectId }: { projectId: string }) {
         </footer>
 
         <DisclaimerDialog />
+        <ValidationRunner />
       </div>
     </MapProvider>
   );

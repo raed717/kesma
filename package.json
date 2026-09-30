@@ -25,6 +25,7 @@
     "dexie": "^4.4.6",
     "fraction.js": "^5.3.4",
     "immer": "^11.1.18",
+    "jsts": "^2.12.1",
     "jszip": "^3.10.2",
     "lucide-react": "^1.49.0",
     "maplibre-gl": "^6.11.2",
