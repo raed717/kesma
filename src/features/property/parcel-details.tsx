@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useId, useState, type ReactNode } from "react";
 import { useMap } from "react-map-gl/maplibre";
 import { centroid } from "@turf/turf";
+import { toast } from "sonner";
 import { fitToGeometries } from "@/components/map/fit";
 import {
   AlertDialog,
@@ -43,6 +44,42 @@ export function ParcelDetails({ parcel }: { parcel: OriginalParcel }) {
   const areaUnit = useWorkspaceStore((s) => s.project?.settings.areaUnit ?? "ha");
   const selectParcel = useMapUiStore((s) => s.selectParcel);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const tScenarios = useTranslations("scenarios");
+  const scenarioCount = useWorkspaceStore((s) => s.project?.scenarios.length ?? 0);
+  const isLastParcel = useWorkspaceStore((s) => (s.project?.property.parcels.length ?? 0) <= 1);
+
+  /**
+   * Scenarios divide the property, so they follow it: lots are clipped to what remains
+   * (scenarios left empty are removed; all of them when the last parcel goes). Parcel and
+   * scenarios change in one update, so a single Ctrl+Z restores both.
+   */
+  async function deleteParcel() {
+    const project = useWorkspaceStore.getState().project;
+    if (!project) return;
+    const remaining = project.property.parcels.filter((p) => p.id !== parcel.id);
+    let scenarios = project.scenarios;
+    let removed = 0;
+    let changed = 0;
+    if (scenarios.length > 0) {
+      const { adaptScenariosToProperty } = await import("@/domain/lot-operations");
+      ({ scenarios, removed, changed } = adaptScenariosToProperty(
+        scenarios,
+        remaining.map((p) => p.geometry),
+        tScenarios("lotPrefix"),
+      ));
+    }
+    update(
+      (draft) => {
+        draft.property.parcels = draft.property.parcels.filter((p) => p.id !== parcel.id);
+        draft.scenarios = scenarios;
+      },
+      { immediate: true },
+    );
+    selectParcel(null);
+    useMapUiStore.setState({ selectedLotIds: [], selectedIssueId: null, lotDraft: null });
+    setConfirmDelete(false);
+    if (removed > 0 || changed > 0) toast.info(t("deleteDone", { removed, changed }));
+  }
 
   const area = geometryAreaM2(parcel.geometry);
   const [lng, lat] = centroid(parcel.geometry).geometry.coordinates;
@@ -180,27 +217,20 @@ export function ParcelDetails({ parcel }: { parcel: OriginalParcel }) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t("deleteBody", { name: parcel.label })}
+            <AlertDialogDescription className="space-y-2">
+              <span className="block">{t("deleteBody", { name: parcel.label })}</span>
+              {scenarioCount > 0 && (
+                <span className="block font-medium text-foreground" data-testid="delete-impact">
+                  {isLastParcel
+                    ? t("deleteImpactAll", { count: scenarioCount })
+                    : t("deleteImpactClip", { count: scenarioCount })}
+                </span>
+              )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{tc("cancel")}</AlertDialogCancel>
-            <AlertDialogAction
-              variant="destructive"
-              onClick={() => {
-                update(
-                  (draft) => {
-                    draft.property.parcels = draft.property.parcels.filter(
-                      (p) => p.id !== parcel.id,
-                    );
-                  },
-                  { immediate: true },
-                );
-                selectParcel(null);
-                setConfirmDelete(false);
-              }}
-            >
+            <AlertDialogAction variant="destructive" onClick={() => void deleteParcel()}>
               {tc("delete")}
             </AlertDialogAction>
           </AlertDialogFooter>

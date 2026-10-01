@@ -187,3 +187,9 @@ export function interiorPoint(polygon: Polygon): Position {
   const c = read(polygon).getInteriorPoint().getCoordinate();
   return [c.x, c.y];
 }
+
+/** Parts of a polygon lying inside the union of the areas. */
+export function intersectionWithAreas(polygon: Polygon, areas: AreaGeometry[]): Polygon[] {
+  if (areas.length === 0) return [];
+  return polygonsOf(read(polygon).intersection(unionAll(areas.map(read))) as G);
+}

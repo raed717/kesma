@@ -1,4 +1,5 @@
 import type { BasemapId } from "@/domain/model/project";
+import { IMAGERY_TILE_URL } from "./imagery-fallback";
 
 export type RasterLayerDef = {
   id: string;
@@ -24,17 +25,20 @@ const OSM: RasterLayerDef = {
 const ESRI_IMAGERY: RasterLayerDef = {
   id: "esri-imagery",
   tiles: [
-    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    // Custom protocol: magnifies the last available imagery instead of Esri's grey
+    // "Map data not yet available" placeholder tiles at very high zoom.
+    IMAGERY_TILE_URL,
   ],
   tileSize: 256,
-  maxzoom: 19,
+  // Requested up to 21 (sharper where Esri has it); missing levels fall back to parents.
+  maxzoom: 21,
   attribution: "Imagery © Esri, Maxar, Earthstar Geographics",
 };
 
 const ESRI_LABELS: RasterLayerDef = {
   id: "esri-labels",
   tiles: [
-    "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}?blankTile=false",
   ],
   tileSize: 256,
   maxzoom: 19,

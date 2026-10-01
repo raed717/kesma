@@ -184,7 +184,10 @@
         "csv": "CSV",
         "gpx": "GPX",
         "drawn": "Drawn on map"
-      }
+      },
+      "deleteImpactAll": "This is the last parcel: the {count, plural, one {scenario} other {# scenarios}} will be deleted too. (Ctrl+Z to undo)",
+      "deleteImpactClip": "{count, plural, one {The scenario will be} other {The # scenarios will be}} adapted: lots on this parcel are removed or trimmed, and scenarios left empty are deleted. (Ctrl+Z to undo)",
+      "deleteDone": "Parcel deleted · {changed, plural, =0 {} one {# scenario adapted} other {# scenarios adapted}}{removed, plural, =0 {} one { · # scenario deleted} other { · # scenarios deleted}}"
     }
   },
   "import": {
@@ -254,7 +257,8 @@
       "noAreaFeatures": "No polygon found in this file (with this coordinate system).",
       "reprojectionFailed": "Coordinates could not be converted from this coordinate system.",
       "unexpected": "Unexpected error while reading the file."
-    }
+    },
+    "replaceDeletesScenarios": "The {count, plural, one {existing scenario} other {# existing scenarios}} will be deleted: they divide the current property. (Ctrl+Z to undo)"
   },
   "beneficiaries": {
     "emptyTitle": "No beneficiaries yet",
@@ -500,7 +504,9 @@
       }
     },
     "autosplit": "Automatic division…",
-    "versionsMenu": "Versions ({count})…"
+    "versionsMenu": "Versions ({count})…",
+    "compare": "Compare scenarios",
+    "report": "Report (PDF)"
   },
   "value": {
     "viewsLabel": "Property views",
@@ -610,5 +616,305 @@
     "lots": "{count, plural, one {# lot} other {# lots}}",
     "restore": "Restore",
     "delete": "Delete {name}"
+  },
+  "pages": {
+    "backToProject": "Back to the project"
+  },
+  "exports": {
+    "menu": "Export",
+    "failed": "Export failed",
+    "report": "Report (PDF)…",
+    "compare": "Compare scenarios…",
+    "filesLabel": "Download a file",
+    "projectFile": "Project file (.kesma.json)",
+    "geojsonScenario": "GeoJSON — property + “{name}”",
+    "geojsonProperty": "GeoJSON — property",
+    "xlsx": "Excel workbook (.xlsx)",
+    "allocationCsv": "Allocation of this scenario (CSV)",
+    "comparisonCsv": "Scenario comparison (CSV)",
+    "sheets": {
+      "comparison": "Comparison",
+      "allocation": "Allocation",
+      "lots": "Lots",
+      "beneficiaries": "Beneficiaries"
+    },
+    "cols": {
+      "scenario": "Scenario",
+      "workflow": "Workflow status",
+      "validity": "Validity",
+      "errors": "Errors",
+      "warnings": "Warnings",
+      "lots": "Lots",
+      "maxLotsPerBeneficiary": "Max lots per beneficiary",
+      "unassignedM2": "Unassigned area (m²)",
+      "maxAreaDeviation": "Max area deviation (%)",
+      "meanAreaDeviation": "Mean area deviation (%)",
+      "withinTolerance": "Within ±{tolerance}%",
+      "maxValueDeviation": "Max value deviation (%)",
+      "roadAccessCount": "Beneficiaries with road access",
+      "beneficiary": "Beneficiary",
+      "sharePct": "Share (%)",
+      "shareInput": "Share as entered",
+      "lotLabels": "Lots",
+      "targetM2": "Target area (m²)",
+      "receivedM2": "Received area (m²)",
+      "diffM2": "Difference (m²)",
+      "diffPct": "Difference (%)",
+      "status": "Status",
+      "targetValue": "Target value ({currency})",
+      "value": "Value ({currency})",
+      "valueDiffPct": "Value difference (%)",
+      "frontageM": "Road frontage (m)",
+      "roadAccess": "Road access",
+      "lot": "Lot",
+      "areaM2": "Area (m²)",
+      "locked": "Locked",
+      "notes": "Notes"
+    },
+    "workflow": {
+      "draft": "Draft",
+      "proposed": "Proposed",
+      "agreed": "Agreed"
+    },
+    "validity": {
+      "valid": "Valid",
+      "incomplete": "Incomplete",
+      "invalid": "Invalid"
+    },
+    "status": {
+      "ok": "Within tolerance",
+      "warn": "Close to the tolerance",
+      "off": "Outside tolerance",
+      "noTarget": "No target"
+    },
+    "unassigned": "Not assigned",
+    "shareRemainder": "Remainder × {weight}"
+  },
+  "compare": {
+    "title": "Compare scenarios",
+    "openReport": "Report",
+    "noScenarios": "This project has no scenario yet. Create one in the Scenarios tab, then come back to compare.",
+    "pick": "Scenario shown on map {side}",
+    "tableTitle": "{count, plural, one {Indicators of the scenario} other {All # scenarios side by side}}",
+    "bestHint": "The best value of each line is highlighted. Lower deviations are better; indicators are estimates, not legal assessments.",
+    "maxDeviationShort": "max. deviation {value}",
+    "legend": "Legend",
+    "unassigned": "Not assigned",
+    "indicator": "Indicator",
+    "best": "Best",
+    "issues": "{errors, plural, =0 {no error} one {# error} other {# errors}}, {warnings, plural, =0 {no warning} one {# warning} other {# warnings}}",
+    "rows": {
+      "validity": "Geometry check",
+      "issues": "Problems",
+      "workflow": "Workflow status",
+      "maxAreaDeviation": "Largest area deviation",
+      "meanAreaDeviation": "Average area deviation",
+      "withinTolerance": "Beneficiaries within ±{tolerance}%",
+      "maxValueDeviation": "Largest value deviation",
+      "roadAccess": "Beneficiaries with road access",
+      "lots": "Number of lots",
+      "maxLotsPerBeneficiary": "Fragmentation",
+      "unassigned": "Area not assigned"
+    },
+    "hints": {
+      "maxAreaDeviation": "Received vs. target area, worst beneficiary",
+      "maxValueDeviation": "Received vs. target estimated value",
+      "maxLotsPerBeneficiary": "Most lots held by one beneficiary"
+    }
+  },
+  "report": {
+    "title": "Division report",
+    "print": "Print / Save as PDF",
+    "options": "Report options",
+    "scenario": "Scenario",
+    "includeComparison": "Include the comparison of all scenarios",
+    "includeCoordinates": "Append lot corner coordinates",
+    "notesLabel": "Notes printed in the report",
+    "notesPlaceholder": "e.g. points agreed during the family meeting, questions for the surveyor…",
+    "printHint": "Use “Print / Save as PDF” and choose “Save as PDF” as the printer. A4 portrait; colours and the disclaimer are printed on every page.",
+    "north": "N",
+    "kicker": "Land division proposal",
+    "facts": {
+      "date": "Date",
+      "propertyArea": "Property area",
+      "parcels": "Parcels",
+      "beneficiaries": "Beneficiaries",
+      "scenario": "Scenario",
+      "status": "Status"
+    },
+    "disclaimerTitle": "Important — planning document only",
+    "sections": {
+      "property": "Property",
+      "beneficiaries": "Beneficiaries and shares",
+      "scenario": "Proposed division — {name}",
+      "allocation": "Allocation",
+      "value": "Value parameters",
+      "validation": "Geometry check",
+      "comparison": "Comparison of scenarios",
+      "notes": "Notes",
+      "coordinates": "Appendix — lot corner coordinates (WGS84)"
+    },
+    "noProperty": "No property has been defined yet.",
+    "total": "Total",
+    "cols": {
+      "beneficiary": "Beneficiary",
+      "shareInput": "Share",
+      "share": "Part",
+      "target": "Target area",
+      "lot": "Lot",
+      "area": "Area",
+      "value": "Est. value",
+      "frontage": "Road frontage",
+      "lots": "Lots",
+      "received": "Received",
+      "diff": "Deviation",
+      "targetValue": "Target value",
+      "valueDiff": "Value deviation",
+      "roadAccess": "Road access",
+      "name": "Name",
+      "valuation": "Valuation",
+      "kind": "Type",
+      "issue": "Problem",
+      "lat": "Latitude",
+      "lon": "Longitude"
+    },
+    "sharesNote": "Shares are entered by the user. KESMA does not compute inheritance rights.",
+    "unassigned": "Not assigned",
+    "noLots": "This scenario has no lots yet.",
+    "unassignedLots": "Not assigned yet: {area} ({count, plural, one {# lot} other {# lots}}).",
+    "roadRule": "a lot has road access with at least 3 m of frontage.",
+    "issueCounts": "{errors, plural, =0 {no error} one {# error} other {# errors}}, {warnings, plural, =0 {no warning} one {# warning} other {# warnings}}",
+    "noIssues": "No problems: the lots cover the property exactly and are all assigned.",
+    "coordinatesNote": "Coordinates in decimal degrees (WGS84), corners in drawing order. For information only — not a survey."
+  },
+  "gettingStarted": {
+    "title": "Getting started",
+    "allDoneTitle": "Your division is ready to review",
+    "dismiss": "Hide the guide",
+    "compare": "Compare scenarios",
+    "report": "Generate the report",
+    "steps": {
+      "property": {
+        "title": "Add the property",
+        "hint": "Import a file (GeoJSON, KML, Shapefile, CSV…) or draw the parcels on the map."
+      },
+      "heirs": {
+        "title": "Enter the heirs and their shares",
+        "hint": "Fractions, percentages, areas or a share of the remainder — they must add up to the whole."
+      },
+      "scenario": {
+        "title": "Create a division scenario",
+        "hint": "Start from the parcels, draw lots, or let the automatic split propose one."
+      },
+      "assign": {
+        "title": "Assign every lot",
+        "hint": "Give each lot to a beneficiary and check the Allocation view."
+      }
+    }
+  },
+  "demo": {
+    "button": "Try a demo",
+    "hint": "The demo creates a sample family property with heirs, values and three scenarios to explore.",
+    "created": "Demo project created",
+    "projectName": "Demo — Family olive farm",
+    "description": "Sample project: two neighbouring parcels in Cap Bon, four heirs, an irrigated zone, a well, an orchard and the road along the south side. Names and shares are fictitious.",
+    "parcels": {
+      "north": "Irrigated field",
+      "east": "Olive grove"
+    },
+    "heirs": {
+      "wife": {
+        "name": "Fatma",
+        "notes": "Spouse — fixed share 1/8 (example)"
+      },
+      "son1": {
+        "name": "Ahmed",
+        "notes": "Son — remainder × 2 (example)"
+      },
+      "son2": {
+        "name": "Youssef",
+        "notes": "Son — remainder × 2 (example)"
+      },
+      "daughter": {
+        "name": "Amira",
+        "notes": "Daughter — remainder × 1 (example)"
+      }
+    },
+    "zone": "Irrigated area",
+    "well": "Well",
+    "orchard": "Olive trees",
+    "road": "Village road",
+    "scenarios": {
+      "area": "Strips by area",
+      "value": "Strips by value",
+      "parcels": "Existing parcels"
+    }
+  },
+  "nav": {
+    "guide": "User guide"
+  },
+  "guide": {
+    "title": "User guide",
+    "intro": "KESMA helps a family or a professional draw, measure and compare possible divisions of a property. Everything happens in your browser: no account, no server.",
+    "tryDemo": "The fastest way to discover it: on the home page, click “Try a demo”.",
+    "sections": [
+      {
+        "title": "1. Add the property",
+        "items": [
+          "Import a file: GeoJSON, KML/KMZ, zipped Shapefile, GPX or a CSV of corner points. Projected coordinates (e.g. Carthage / UTM) are detected and converted.",
+          "Or draw the parcels on the satellite map: click each corner, double-click or press Enter to finish.",
+          "Each parcel keeps its own name, land use, water access and notes. Parcels are never modified by scenarios."
+        ]
+      },
+      {
+        "title": "2. Enter the heirs and their shares",
+        "items": [
+          "A share can be a fraction (1/8, 7/24…), a percentage, a target area, or a part of the remainder with a weight (e.g. 2 for a son and 1 for a daughter).",
+          "Fractions stay exact. The summary shows when the shares do not add up to the whole property.",
+          "KESMA does not compute inheritance rights: enter the shares decided by the family or the notary."
+        ]
+      },
+      {
+        "title": "3. Create division scenarios",
+        "items": [
+          "Start from the parcels, from scratch, or use the automatic split: parallel strips by area or by value, in the order and direction you choose.",
+          "Edit lots on the map: cut with a line, merge, draw a lot, drag corners (shared edges move together), add or remove corners. Lots cannot leave the property.",
+          "Assign each lot to a beneficiary, lock lots you agree on, and save named versions to come back to later."
+        ]
+      },
+      {
+        "title": "4. Value and road access (optional)",
+        "items": [
+          "Set a base value per m², draw value zones (irrigated land, building land…), and add assets such as wells, buildings or orchards.",
+          "Draw the roads along the property: each lot's road frontage is measured, and a lot has access with at least 3 m of frontage.",
+          "Values are estimates you enter yourself — not official valuations."
+        ]
+      },
+      {
+        "title": "5. Check the scenario",
+        "items": [
+          "Allocation compares what each beneficiary receives with their target, by area or by value, against the tolerance set in the project settings.",
+          "Validation finds overlaps, gaps, parts outside the property, invalid shapes and unassigned lots, and offers one-click fixes."
+        ]
+      },
+      {
+        "title": "6. Compare, report and export",
+        "items": [
+          "Compare scenarios shows two synchronised maps and a table of indicators (deviations, road access, fragmentation…).",
+          "The report is a printable A4 document (plans, tables, validation, notes, disclaimer on every page): print it or save it as PDF.",
+          "Exports: project file (.kesma.json) to share or back up, GeoJSON for GIS software (QGIS…), Excel and CSV tables."
+        ]
+      },
+      {
+        "title": "7. Your data",
+        "items": [
+          "Projects are saved automatically in this browser only. Clearing browser data deletes them: export the project file regularly.",
+          "To work on another computer or share with a relative, send the .kesma.json file and import it from the home page.",
+          "Undo / redo (Ctrl+Z / Ctrl+Y) keep the last 100 changes of the open project."
+        ]
+      }
+    ],
+    "limitsTitle": "Limits",
+    "limits": "KESMA is a planning and visualization tool. Areas are computed on the ellipsoid and are accurate for planning, but the tool does not replace a surveyor, a notary or the land registry. Any final division must be validated by the competent professionals and authorities."
   }
 }

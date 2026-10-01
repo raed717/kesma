@@ -184,7 +184,10 @@
         "csv": "CSV",
         "gpx": "GPX",
         "drawn": "Dessinée sur la carte"
-      }
+      },
+      "deleteImpactAll": "C'est la dernière parcelle : {count, plural, one {le scénario sera aussi supprimé} other {les # scénarios seront aussi supprimés}}. (Ctrl+Z pour annuler)",
+      "deleteImpactClip": "{count, plural, one {Le scénario sera adapté} other {Les # scénarios seront adaptés}} : les lots sur cette parcelle sont retirés ou découpés, et les scénarios devenus vides sont supprimés. (Ctrl+Z pour annuler)",
+      "deleteDone": "Parcelle supprimée · {changed, plural, =0 {} one {# scénario adapté} other {# scénarios adaptés}}{removed, plural, =0 {} one { · # scénario supprimé} other { · # scénarios supprimés}}"
     }
   },
   "import": {
@@ -254,7 +257,8 @@
       "noAreaFeatures": "Aucun polygone trouvé dans ce fichier (avec ce système de coordonnées).",
       "reprojectionFailed": "Les coordonnées n'ont pas pu être converties depuis ce système.",
       "unexpected": "Erreur inattendue lors de la lecture du fichier."
-    }
+    },
+    "replaceDeletesScenarios": "{count, plural, one {Le scénario existant sera supprimé} other {Les # scénarios existants seront supprimés}} : ils divisent la propriété actuelle. (Ctrl+Z pour annuler)"
   },
   "beneficiaries": {
     "emptyTitle": "Aucun bénéficiaire",
@@ -500,7 +504,9 @@
       }
     },
     "autosplit": "Répartition automatique…",
-    "versionsMenu": "Versions ({count})…"
+    "versionsMenu": "Versions ({count})…",
+    "compare": "Comparer les scénarios",
+    "report": "Rapport (PDF)"
   },
   "value": {
     "viewsLabel": "Vues de la propriété",
@@ -610,5 +616,305 @@
     "lots": "{count, plural, one {# lot} other {# lots}}",
     "restore": "Restaurer",
     "delete": "Supprimer {name}"
+  },
+  "pages": {
+    "backToProject": "Retour au projet"
+  },
+  "exports": {
+    "menu": "Exporter",
+    "failed": "L’export a échoué",
+    "report": "Rapport (PDF)…",
+    "compare": "Comparer les scénarios…",
+    "filesLabel": "Télécharger un fichier",
+    "projectFile": "Fichier projet (.kesma.json)",
+    "geojsonScenario": "GeoJSON — propriété + « {name} »",
+    "geojsonProperty": "GeoJSON — propriété",
+    "xlsx": "Classeur Excel (.xlsx)",
+    "allocationCsv": "Répartition de ce scénario (CSV)",
+    "comparisonCsv": "Comparaison des scénarios (CSV)",
+    "sheets": {
+      "comparison": "Comparaison",
+      "allocation": "Répartition",
+      "lots": "Lots",
+      "beneficiaries": "Bénéficiaires"
+    },
+    "cols": {
+      "scenario": "Scénario",
+      "workflow": "Statut",
+      "validity": "Validité",
+      "errors": "Erreurs",
+      "warnings": "Avertissements",
+      "lots": "Lots",
+      "maxLotsPerBeneficiary": "Lots max. par bénéficiaire",
+      "unassignedM2": "Surface non attribuée (m²)",
+      "maxAreaDeviation": "Écart de surface max. (%)",
+      "meanAreaDeviation": "Écart de surface moyen (%)",
+      "withinTolerance": "Dans ±{tolerance} %",
+      "maxValueDeviation": "Écart de valeur max. (%)",
+      "roadAccessCount": "Bénéficiaires avec accès route",
+      "beneficiary": "Bénéficiaire",
+      "sharePct": "Part (%)",
+      "shareInput": "Part saisie",
+      "lotLabels": "Lots",
+      "targetM2": "Surface cible (m²)",
+      "receivedM2": "Surface reçue (m²)",
+      "diffM2": "Écart (m²)",
+      "diffPct": "Écart (%)",
+      "status": "Statut",
+      "targetValue": "Valeur cible ({currency})",
+      "value": "Valeur ({currency})",
+      "valueDiffPct": "Écart de valeur (%)",
+      "frontageM": "Façade sur route (m)",
+      "roadAccess": "Accès route",
+      "lot": "Lot",
+      "areaM2": "Surface (m²)",
+      "locked": "Verrouillé",
+      "notes": "Notes"
+    },
+    "workflow": {
+      "draft": "Brouillon",
+      "proposed": "Proposé",
+      "agreed": "Accepté"
+    },
+    "validity": {
+      "valid": "Valide",
+      "incomplete": "Incomplet",
+      "invalid": "Invalide"
+    },
+    "status": {
+      "ok": "Dans la tolérance",
+      "warn": "Proche de la tolérance",
+      "off": "Hors tolérance",
+      "noTarget": "Sans cible"
+    },
+    "unassigned": "Non attribué",
+    "shareRemainder": "Reste × {weight}"
+  },
+  "compare": {
+    "title": "Comparer les scénarios",
+    "openReport": "Rapport",
+    "noScenarios": "Ce projet n’a pas encore de scénario. Créez-en un dans l’onglet Scénarios, puis revenez comparer.",
+    "pick": "Scénario affiché sur la carte {side}",
+    "tableTitle": "{count, plural, one {Indicateurs du scénario} other {Les # scénarios côte à côte}}",
+    "bestHint": "La meilleure valeur de chaque ligne est mise en évidence. Plus l’écart est faible, mieux c’est ; ces indicateurs sont des estimations, pas des évaluations juridiques.",
+    "maxDeviationShort": "écart max. {value}",
+    "legend": "Légende",
+    "unassigned": "Non attribué",
+    "indicator": "Indicateur",
+    "best": "Meilleur",
+    "issues": "{errors, plural, =0 {aucune erreur} one {# erreur} other {# erreurs}}, {warnings, plural, =0 {aucun avertissement} one {# avertissement} other {# avertissements}}",
+    "rows": {
+      "validity": "Contrôle géométrique",
+      "issues": "Problèmes",
+      "workflow": "Statut",
+      "maxAreaDeviation": "Plus grand écart de surface",
+      "meanAreaDeviation": "Écart de surface moyen",
+      "withinTolerance": "Bénéficiaires dans ±{tolerance} %",
+      "maxValueDeviation": "Plus grand écart de valeur",
+      "roadAccess": "Bénéficiaires avec accès route",
+      "lots": "Nombre de lots",
+      "maxLotsPerBeneficiary": "Morcellement",
+      "unassigned": "Surface non attribuée"
+    },
+    "hints": {
+      "maxAreaDeviation": "Surface reçue vs cible, pire bénéficiaire",
+      "maxValueDeviation": "Valeur estimée reçue vs cible",
+      "maxLotsPerBeneficiary": "Nombre max. de lots d’un même bénéficiaire"
+    }
+  },
+  "report": {
+    "title": "Rapport de partage",
+    "print": "Imprimer / Enregistrer en PDF",
+    "options": "Options du rapport",
+    "scenario": "Scénario",
+    "includeComparison": "Inclure la comparaison de tous les scénarios",
+    "includeCoordinates": "Ajouter les coordonnées des sommets des lots",
+    "notesLabel": "Notes imprimées dans le rapport",
+    "notesPlaceholder": "ex. points convenus lors de la réunion de famille, questions pour le géomètre…",
+    "printHint": "Cliquez sur « Imprimer / Enregistrer en PDF » et choisissez « Enregistrer au format PDF » comme imprimante. A4 portrait ; les couleurs et l’avertissement figurent sur chaque page.",
+    "north": "N",
+    "kicker": "Proposition de partage foncier",
+    "facts": {
+      "date": "Date",
+      "propertyArea": "Surface de la propriété",
+      "parcels": "Parcelles",
+      "beneficiaries": "Bénéficiaires",
+      "scenario": "Scénario",
+      "status": "Statut"
+    },
+    "disclaimerTitle": "Important — document de travail uniquement",
+    "sections": {
+      "property": "Propriété",
+      "beneficiaries": "Bénéficiaires et parts",
+      "scenario": "Partage proposé — {name}",
+      "allocation": "Répartition",
+      "value": "Paramètres de valeur",
+      "validation": "Contrôle géométrique",
+      "comparison": "Comparaison des scénarios",
+      "notes": "Notes",
+      "coordinates": "Annexe — coordonnées des sommets des lots (WGS84)"
+    },
+    "noProperty": "Aucune propriété n’a encore été définie.",
+    "total": "Total",
+    "cols": {
+      "beneficiary": "Bénéficiaire",
+      "shareInput": "Part",
+      "share": "Fraction",
+      "target": "Surface cible",
+      "lot": "Lot",
+      "area": "Surface",
+      "value": "Valeur est.",
+      "frontage": "Façade sur route",
+      "lots": "Lots",
+      "received": "Reçu",
+      "diff": "Écart",
+      "targetValue": "Valeur cible",
+      "valueDiff": "Écart de valeur",
+      "roadAccess": "Accès route",
+      "name": "Nom",
+      "valuation": "Valorisation",
+      "kind": "Type",
+      "issue": "Problème",
+      "lat": "Latitude",
+      "lon": "Longitude"
+    },
+    "sharesNote": "Les parts sont saisies par l’utilisateur. KESMA ne calcule pas les droits successoraux.",
+    "unassigned": "Non attribué",
+    "noLots": "Ce scénario n’a pas encore de lots.",
+    "unassignedLots": "Pas encore attribué : {area} ({count, plural, one {# lot} other {# lots}}).",
+    "roadRule": "un lot a un accès route avec au moins 3 m de façade.",
+    "issueCounts": "{errors, plural, =0 {aucune erreur} one {# erreur} other {# erreurs}}, {warnings, plural, =0 {aucun avertissement} one {# avertissement} other {# avertissements}}",
+    "noIssues": "Aucun problème : les lots couvrent exactement la propriété et sont tous attribués.",
+    "coordinatesNote": "Coordonnées en degrés décimaux (WGS84), sommets dans l’ordre du tracé. À titre indicatif — ce n’est pas un levé topographique."
+  },
+  "gettingStarted": {
+    "title": "Pour commencer",
+    "allDoneTitle": "Votre partage est prêt à être examiné",
+    "dismiss": "Masquer le guide",
+    "compare": "Comparer les scénarios",
+    "report": "Générer le rapport",
+    "steps": {
+      "property": {
+        "title": "Ajouter la propriété",
+        "hint": "Importez un fichier (GeoJSON, KML, Shapefile, CSV…) ou dessinez les parcelles sur la carte."
+      },
+      "heirs": {
+        "title": "Saisir les héritiers et leurs parts",
+        "hint": "Fractions, pourcentages, surfaces ou part du reste — le total doit couvrir l’ensemble."
+      },
+      "scenario": {
+        "title": "Créer un scénario de partage",
+        "hint": "Partez des parcelles, dessinez des lots ou laissez le découpage automatique en proposer un."
+      },
+      "assign": {
+        "title": "Attribuer chaque lot",
+        "hint": "Attribuez chaque lot à un bénéficiaire et vérifiez la vue Répartition."
+      }
+    }
+  },
+  "demo": {
+    "button": "Essayer une démo",
+    "hint": "La démo crée une propriété familiale d’exemple avec héritiers, valeurs et trois scénarios à explorer.",
+    "created": "Projet de démonstration créé",
+    "projectName": "Démo — Oliveraie familiale",
+    "description": "Projet d’exemple : deux parcelles voisines au Cap Bon, quatre héritiers, une zone irriguée, un puits, un verger et la route au sud. Noms et parts fictifs.",
+    "parcels": {
+      "north": "Champ irrigué",
+      "east": "Oliveraie"
+    },
+    "heirs": {
+      "wife": {
+        "name": "Fatma",
+        "notes": "Épouse — part fixe 1/8 (exemple)"
+      },
+      "son1": {
+        "name": "Ahmed",
+        "notes": "Fils — reste × 2 (exemple)"
+      },
+      "son2": {
+        "name": "Youssef",
+        "notes": "Fils — reste × 2 (exemple)"
+      },
+      "daughter": {
+        "name": "Amira",
+        "notes": "Fille — reste × 1 (exemple)"
+      }
+    },
+    "zone": "Zone irriguée",
+    "well": "Puits",
+    "orchard": "Oliviers",
+    "road": "Route du village",
+    "scenarios": {
+      "area": "Bandes par surface",
+      "value": "Bandes par valeur",
+      "parcels": "Parcelles existantes"
+    }
+  },
+  "nav": {
+    "guide": "Guide d’utilisation"
+  },
+  "guide": {
+    "title": "Guide d’utilisation",
+    "intro": "KESMA aide une famille ou un professionnel à dessiner, mesurer et comparer des partages possibles d’une propriété. Tout se passe dans votre navigateur : pas de compte, pas de serveur.",
+    "tryDemo": "Le plus rapide pour découvrir : sur la page d’accueil, cliquez sur « Essayer une démo ».",
+    "sections": [
+      {
+        "title": "1. Ajouter la propriété",
+        "items": [
+          "Importez un fichier : GeoJSON, KML/KMZ, Shapefile zippé, GPX ou CSV de sommets. Les coordonnées projetées (ex. Carthage / UTM) sont détectées et converties.",
+          "Ou dessinez les parcelles sur la carte satellite : cliquez chaque sommet, double-cliquez ou appuyez sur Entrée pour terminer.",
+          "Chaque parcelle garde son nom, son usage, l’accès à l’eau et des notes. Les scénarios ne modifient jamais les parcelles."
+        ]
+      },
+      {
+        "title": "2. Saisir les héritiers et leurs parts",
+        "items": [
+          "Une part peut être une fraction (1/8, 7/24…), un pourcentage, une surface cible, ou une part du reste avec un poids (ex. 2 pour un fils et 1 pour une fille).",
+          "Les fractions restent exactes. Le résumé signale quand les parts ne couvrent pas toute la propriété.",
+          "KESMA ne calcule pas les droits successoraux : saisissez les parts décidées par la famille ou le notaire."
+        ]
+      },
+      {
+        "title": "3. Créer des scénarios de partage",
+        "items": [
+          "Partez des parcelles, d’une page blanche, ou du découpage automatique : bandes parallèles par surface ou par valeur, dans l’ordre et la direction choisis.",
+          "Modifiez les lots sur la carte : couper avec une ligne, fusionner, dessiner un lot, déplacer des sommets (les bords partagés suivent), ajouter ou supprimer des sommets. Les lots ne peuvent pas sortir de la propriété.",
+          "Attribuez chaque lot à un bénéficiaire, verrouillez les lots acceptés et enregistrez des versions nommées pour y revenir."
+        ]
+      },
+      {
+        "title": "4. Valeur et accès à la route (facultatif)",
+        "items": [
+          "Définissez une valeur de base au m², dessinez des zones de valeur (terre irriguée, constructible…) et ajoutez des biens : puits, bâtiments, vergers.",
+          "Dessinez les routes le long de la propriété : la façade de chaque lot est mesurée, et un lot a un accès avec au moins 3 m de façade.",
+          "Les valeurs sont des estimations que vous saisissez — pas des évaluations officielles."
+        ]
+      },
+      {
+        "title": "5. Vérifier le scénario",
+        "items": [
+          "La répartition compare ce que reçoit chaque bénéficiaire à sa cible, en surface ou en valeur, selon la tolérance définie dans les paramètres.",
+          "La validation détecte chevauchements, trous, parties hors propriété, formes invalides et lots non attribués, avec des corrections en un clic."
+        ]
+      },
+      {
+        "title": "6. Comparer, rapport et exports",
+        "items": [
+          "« Comparer les scénarios » affiche deux cartes synchronisées et un tableau d’indicateurs (écarts, accès route, morcellement…).",
+          "Le rapport est un document A4 imprimable (plans, tableaux, validation, notes, avertissement sur chaque page) : imprimez-le ou enregistrez-le en PDF.",
+          "Exports : fichier projet (.kesma.json) pour partager ou sauvegarder, GeoJSON pour les logiciels SIG (QGIS…), tableaux Excel et CSV."
+        ]
+      },
+      {
+        "title": "7. Vos données",
+        "items": [
+          "Les projets sont enregistrés automatiquement dans ce navigateur uniquement. Effacer les données du navigateur les supprime : exportez régulièrement le fichier projet.",
+          "Pour travailler sur un autre ordinateur ou partager avec un proche, envoyez le fichier .kesma.json et importez-le depuis l’accueil.",
+          "Annuler / rétablir (Ctrl+Z / Ctrl+Y) conservent les 100 dernières modifications du projet ouvert."
+        ]
+      }
+    ],
+    "limitsTitle": "Limites",
+    "limits": "KESMA est un outil de planification et de visualisation. Les surfaces sont calculées sur l’ellipsoïde et suffisamment précises pour la planification, mais l’outil ne remplace ni le géomètre, ni le notaire, ni la conservation foncière. Tout partage définitif doit être validé par les professionnels et autorités compétents."
   }
 }

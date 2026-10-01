@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  Columns2,
   Copy,
+  FileText,
   History,
   Layers,
   MoreVertical,
@@ -39,6 +41,7 @@ import { cn } from "@/lib/utils";
 import { useMapUiStore } from "@/store/map-ui-store";
 import { useWorkspaceStore } from "@/store/workspace-store";
 import { ProjectFormDialog } from "../projects/project-form-dialog";
+import { useOpenProjectPage } from "../workspace/export-menu";
 import { AllocationView } from "./allocation-view";
 import { AutoSplitDialog } from "./autosplit-dialog";
 import { VersionsDialog } from "./versions-dialog";
@@ -65,6 +68,7 @@ export function ScenariosPanel() {
   const { setActiveScenario, scenarioView: view, setScenarioView } = useMapUiStore();
   const { result: validation } = useValidation(scenario?.id ?? null);
   const [dialog, setDialog] = useState<Dialog>({ kind: "none" });
+  const openPage = useOpenProjectPage();
   const close = () => setDialog({ kind: "none" });
 
   if (!project) return null;
@@ -249,6 +253,13 @@ export function ScenariosPanel() {
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setDialog({ kind: "versions", scenario })}>
                 <History /> {t("versionsMenu", { count: scenario.versions.length })}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => void openPage("compare", scenario.id)}>
+                <Columns2 /> {t("compare")}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => void openPage("report", scenario.id)}>
+                <FileText /> {t("report")}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setDialog({ kind: "duplicate", scenario })}>

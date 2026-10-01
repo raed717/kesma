@@ -7,6 +7,7 @@ import { useMapUiStore, type WorkspacePanel } from "@/store/map-ui-store";
 import { BeneficiariesPanel } from "../beneficiaries/beneficiaries-panel";
 import { PropertyPanel } from "../property/property-panel";
 import { ScenariosPanel } from "../scenarios/scenarios-panel";
+import { GettingStarted } from "./getting-started";
 import { SettingsPanel } from "./settings-panel";
 
 export function SidePanel() {
@@ -38,6 +39,7 @@ export function SidePanel() {
         </TabsList>
       </div>
       <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
+        <GettingStarted />
         <TabsContent value="property">
           <PropertyPanel />
         </TabsContent>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Download, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { ArrowLeft, CircleHelp, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -16,10 +16,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useMapUiStore } from "@/store/map-ui-store";
 import { useWorkspaceStore } from "@/store/workspace-store";
-import { exportProjectFile } from "../projects/export-project";
 import { ValidationRunner } from "../scenarios/validation-runner";
 import { ProjectNameEditor } from "./project-name-editor";
 import { HistoryControls } from "./history-controls";
+import { ExportMenu } from "./export-menu";
 import { SaveIndicator } from "./save-indicator";
 import { SidePanel } from "./side-panel";
 
@@ -97,7 +97,14 @@ export function Workspace({ projectId }: { projectId: string }) {
           <SaveIndicator />
           <HistoryControls />
           <div className="ms-auto flex items-center gap-1">
-            <ExportButton />
+            <ExportMenu />
+            <IconButton
+              label={t("nav.guide")}
+              icon={<CircleHelp />}
+              variant="ghost"
+              render={<Link href="/guide" target="_blank" rel="noopener" />}
+              nativeButton={false}
+            />
             <LocaleSwitcher />
             <ThemeToggle />
             <IconButton
@@ -138,25 +145,6 @@ export function Workspace({ projectId }: { projectId: string }) {
         <ValidationRunner />
       </div>
     </MapProvider>
-  );
-}
-
-function ExportButton() {
-  const t = useTranslations();
-  return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={async () => {
-        await useWorkspaceStore.getState().flush();
-        const project = useWorkspaceStore.getState().project;
-        if (!project) return;
-        exportProjectFile(project);
-        toast.success(t("toast.exported"));
-      }}
-    >
-      <Download /> <span className="hidden sm:inline">{t("common.export")}</span>
-    </Button>
   );
 }
 

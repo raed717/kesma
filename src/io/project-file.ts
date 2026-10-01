@@ -37,13 +37,19 @@ export function parseProjectFile(text: string): Project {
   return migrateProject((data as { project?: unknown }).project);
 }
 
-export function projectFileName(project: Project): string {
-  const slug =
-    project.name
+/** File-name-safe slug that keeps letters of any script (Arabic names stay readable). */
+export function fileSlug(text: string, fallback = "project"): string {
+  return (
+    text
       .normalize("NFKD")
       .replace(/[̀-ͯ]/g, "")
       .replace(/[^\p{L}\p{N}]+/gu, "-")
       .replace(/^-+|-+$/g, "")
-      .toLowerCase() || "project";
-  return `${slug}${PROJECT_FILE_EXTENSION}`;
+      .toLowerCase()
+      .slice(0, 60) || fallback
+  );
+}
+
+export function projectFileName(project: Project): string {
+  return `${fileSlug(project.name)}${PROJECT_FILE_EXTENSION}`;
 }

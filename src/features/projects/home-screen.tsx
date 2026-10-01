@@ -1,6 +1,7 @@
 "use client";
 
-import { FileUp, FolderOpen, Plus } from "lucide-react";
+import { BookOpen, FileUp, FolderOpen, Plus, Sparkles } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useRef, useState, type ChangeEvent } from "react";
@@ -47,6 +48,43 @@ export function HomeScreen() {
   const fileInput = useRef<HTMLInputElement>(null);
   const repo = () => getProjectRepository();
   const close = () => setDialog({ kind: "none" });
+  const tDemo = useTranslations("demo");
+  const [creatingDemo, setCreatingDemo] = useState(false);
+
+  async function createDemo() {
+    setCreatingDemo(true);
+    try {
+      const { buildDemoProject } = await import("@/domain/demo");
+      const heir = (k: "wife" | "son1" | "son2" | "daughter") => ({
+        name: tDemo(`heirs.${k}.name`),
+        notes: tDemo(`heirs.${k}.notes`),
+      });
+      const project = buildDemoProject({
+        projectName: tDemo("projectName"),
+        description: tDemo("description"),
+        parcels: [tDemo("parcels.north"), tDemo("parcels.east")],
+        heirs: [heir("wife"), heir("son1"), heir("son2"), heir("daughter")],
+        zone: tDemo("zone"),
+        well: tDemo("well"),
+        orchard: tDemo("orchard"),
+        road: tDemo("road"),
+        lotPrefix: t("scenarios.lotPrefix"),
+        scenarios: {
+          area: tDemo("scenarios.area"),
+          value: tDemo("scenarios.value"),
+          parcels: tDemo("scenarios.parcels"),
+        },
+      });
+      await repo().save(project);
+      void requestPersistentStorage();
+      toast.success(tDemo("created"));
+      router.push(`/projects/${project.id}`);
+    } catch (error) {
+      console.error("[kesma] Demo creation failed", error);
+      toast.error(String(error));
+      setCreatingDemo(false);
+    }
+  }
 
   async function handleAction(project: ProjectSummary, action: ProjectAction) {
     if (action === "export") {
@@ -88,6 +126,9 @@ export function HomeScreen() {
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
           <Brand />
           <div className="flex items-center gap-1">
+            <Button variant="ghost" size="sm" render={<Link href="/guide" />} nativeButton={false}>
+              <BookOpen /> <span className="hidden sm:inline">{t("nav.guide")}</span>
+            </Button>
             <LocaleSwitcher />
             <ThemeToggle />
           </div>
@@ -100,7 +141,15 @@ export function HomeScreen() {
             <h1 className="text-2xl font-semibold tracking-tight">{t("home.title")}</h1>
             <p className="mt-1 text-sm text-muted-foreground">{t("home.subtitle")}</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              onClick={createDemo}
+              disabled={creatingDemo}
+              data-testid="try-demo"
+            >
+              <Sparkles /> {tDemo("button")}
+            </Button>
             <Button variant="outline" onClick={() => fileInput.current?.click()}>
               <FileUp /> {t("home.importProject")}
             </Button>
@@ -127,9 +176,15 @@ export function HomeScreen() {
             </div>
             <h2 className="mt-4 font-medium">{t("home.emptyTitle")}</h2>
             <p className="mt-1 max-w-sm text-sm text-muted-foreground">{t("home.emptyBody")}</p>
-            <Button className="mt-6" onClick={() => setDialog({ kind: "create" })}>
-              <Plus /> {t("home.newProject")}
-            </Button>
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              <Button onClick={() => setDialog({ kind: "create" })}>
+                <Plus /> {t("home.newProject")}
+              </Button>
+              <Button variant="outline" onClick={createDemo} disabled={creatingDemo}>
+                <Sparkles /> {tDemo("button")}
+              </Button>
+            </div>
+            <p className="mt-3 max-w-sm text-xs text-muted-foreground">{tDemo("hint")}</p>
           </div>
         ) : (
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

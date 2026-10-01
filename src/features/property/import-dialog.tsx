@@ -343,6 +343,7 @@ function ReviewStep({
   const areaUnit = useWorkspaceStore((s) => s.project?.settings.areaUnit ?? "ha");
   const selectParcel = useMapUiStore((s) => s.selectParcel);
   const [replace, setReplace] = useState(false);
+  const scenarioCount = useWorkspaceStore((s) => s.project?.scenarios.length ?? 0);
 
   const result = useMemo<{ preview: ImportPreview | null; error: string | null }>(() => {
     if (!crs) return { preview: null, error: null };
@@ -388,6 +389,8 @@ function ReviewStep({
     update(
       (draft) => {
         draft.property.parcels = replace ? created : [...draft.property.parcels, ...created];
+        // Scenarios divided the previous property: they don't apply to a replaced one.
+        if (replace) draft.scenarios = [];
       },
       { immediate: true },
     );
@@ -549,6 +552,15 @@ function ReviewStep({
                 />
                 {t("replace", { count: existing })}
               </label>
+            )}
+            {replace && scenarioCount > 0 && (
+              <p
+                className="flex items-start gap-1.5 text-xs text-amber-700 dark:text-amber-400"
+                data-testid="replace-impact"
+              >
+                <AlertTriangle className="mt-px size-3.5 shrink-0" />
+                {t("replaceDeletesScenarios", { count: scenarioCount })}
+              </p>
             )}
 
             <p className="flex items-center gap-1.5 text-sm font-medium">

@@ -1,5 +1,5 @@
-export function downloadText(content: string, fileName: string, mimeType: string) {
-  const url = URL.createObjectURL(new Blob([content], { type: mimeType }));
+export function downloadBlob(blob: Blob, fileName: string) {
+  const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
   anchor.download = fileName;
@@ -8,4 +8,8 @@ export function downloadText(content: string, fileName: string, mimeType: string
   anchor.remove();
   // Give the browser a tick to start the download before revoking.
   setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+export function downloadText(content: string, fileName: string, mimeType: string) {
+  downloadBlob(new Blob([content], { type: mimeType }), fileName);
 }

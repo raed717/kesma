@@ -3,6 +3,7 @@ import { feature, length as turfLength } from "@turf/turf";
 import {
   differencePolygons,
   fitNewLot,
+  intersectionWithAreas,
   mergePolygons,
   repairPolygon,
   sharedBoundary,
@@ -11,7 +12,7 @@ import {
 import { geometryAreaM2 } from "./geometry/measure";
 import { insertPointsOnEdges, verticesOf } from "./geometry/topology";
 import type { AreaGeometry, LineString, Polygon } from "./model/geojson";
-import type { Lot } from "./model/project";
+import type { Lot, Scenario } from "./model/project";
 import { createLot, nextLotLabel } from "./scenarios";
 
 export type LotOpResult =
@@ -244,4 +245,98 @@ export function exitsProperty(
     if (outsideAreaM2(lot.geometry, property) > baseline + EXIT_TOLERANCE_M2) return true;
   }
   return false;
+}
+
+// ---------- keeping scenarios in sync with the property ----------
+
+/** Below this (m²), a difference between a lot and its clipped version is float noise. */
+const CLIP_NOISE_M2 = 0.01;
+/** Clipped leftovers smaller than this (m²) are slivers, not lots. */
+const CLIP_MIN_PIECE_M2 = 1;
+/** A lot keeping less than this share of its area is considered gone, not trimmed. */
+const CLIP_MIN_KEPT_RATIO = 0.01;
+
+/**
+ * Clips lots to the property. Lots fully inside are returned untouched (same objects, so
+ * shared vertices stay exact); lots partly outside are trimmed (the largest piece keeps the
+ * lot's id, label and assignment); lots fully outside — or keeping under 1 % of their area,
+ * e.g. a sliver where parcels overlapped — are dropped, as are leftover pieces under 1 m².
+ */
+export function clipLotsToProperty(
+  lots: Lot[],
+  property: AreaGeometry[],
+  lotPrefix: string,
+): { lots: Lot[]; changed: boolean } {
+  if (property.length === 0) return { lots: [], changed: lots.length > 0 };
+  const out: Lot[] = [];
+  const newPieces: Polygon[] = [];
+  let changed = false;
+  for (const lot of lots) {
+    const pieces = intersectionWithAreas(lot.geometry, property)
+      .map((geometry) => ({ geometry, area: geometryAreaM2(geometry) }))
+      .filter((p) => p.area > CLIP_NOISE_M2)
+      .sort((a, b) => b.area - a.area);
+    const original = geometryAreaM2(lot.geometry);
+    const kept = pieces.reduce((s, p) => s + p.area, 0);
+    if (pieces.length === 1 && Math.abs(kept - original) <= CLIP_NOISE_M2) {
+      out.push(lot); // fully inside
+      continue;
+    }
+    changed = true;
+    if (kept < original * CLIP_MIN_KEPT_RATIO) continue; // (almost) fully outside: dropped
+    const big = pieces.filter((p) => p.area >= CLIP_MIN_PIECE_M2);
+    if (big.length === 0) continue;
+    pieces.splice(0, pieces.length, ...big);
+    out.push({ ...lot, geometry: pieces[0].geometry });
+    newPieces.push(...pieces.map((p) => p.geometry));
+    for (const p of pieces.slice(1)) {
+      out.push(
+        createLot({
+          label: nextLotLabel([...lots, ...out], lotPrefix),
+          geometry: p.geometry,
+          beneficiaryId: lot.beneficiaryId,
+        }),
+      );
+    }
+  }
+  return { lots: changed ? insertPointsOnEdges(out, verticesOf(newPieces)) : lots, changed };
+}
+
+/**
+ * Brings scenarios in line with a changed property (e.g. a deleted parcel): every
+ * scenario and saved version is clipped to the new property; scenarios left without lots
+ * are removed, and all scenarios go when the property is empty.
+ */
+export function adaptScenariosToProperty(
+  scenarios: Scenario[],
+  property: AreaGeometry[],
+  lotPrefix: string,
+): { scenarios: Scenario[]; removed: number; changed: number } {
+  if (property.length === 0) return { scenarios: [], removed: scenarios.length, changed: 0 };
+  const now = new Date().toISOString();
+  let removed = 0;
+  let changed = 0;
+  const next: Scenario[] = [];
+  for (const s of scenarios) {
+    const clipped = clipLotsToProperty(s.lots, property, lotPrefix);
+    if (s.lots.length > 0 && clipped.lots.length === 0) {
+      removed++;
+      continue;
+    }
+    let versionsChanged = false;
+    const versions = s.versions
+      .map((v) => {
+        const r = clipLotsToProperty(v.lots, property, lotPrefix);
+        if (r.changed) versionsChanged = true;
+        return r.changed ? { ...v, lots: r.lots } : v;
+      })
+      .filter((v) => v.lots.length > 0);
+    if (clipped.changed || versionsChanged || versions.length !== s.versions.length) {
+      changed++;
+      next.push({ ...s, lots: clipped.lots, versions, updatedAt: now });
+    } else {
+      next.push(s);
+    }
+  }
+  return { scenarios: next, removed, changed };
 }
